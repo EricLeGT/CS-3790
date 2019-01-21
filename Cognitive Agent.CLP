@@ -1,5 +1,8 @@
 ;Start CLIPS
-;load up into CLIPS then RUN
+;load up into CLIPS 
+;click on the gear icon
+;click on "load buffer" 
+;type in (run) in the dialog
 ;For now just answer either N or Y > (some number) and the program will end
 
 
@@ -8,7 +11,7 @@
 
   (defrule Begin
   =>
-  (printout t "Are you feeling hungry (Y/N)")
+  (printout t "Are you feeling hungry (Y/N)" crlf)
   (assert (is-hungry (read))))
   
   (defrule notHungry
@@ -20,9 +23,26 @@
   (defrule isHungry
   (is-hungry Y)
   =>
-  (printout t "What time is it (Enter just the hour ex. 3 for 3 PM)")
+  (printout t "What time is it (Enter just the hour ex. 3 for 3 PM)" crlf)
   (bind ?hour (read))
-  (assert (Time (hour ?hour)))
+  (assert (Time (hour ?hour))))
+  
+  (defrule DietaryRestriction
+  (is-hungry Y)
+  =>
+  (printout t "Are you pescatarian (Y/N)" crlf)
+  (assert (is-pescatarian (read))))
+  
+  (defrule isPescatarian
+  (is-pescatarian Y)
+  =>
+  (printout t "Go eat at Subway" crlf) 
+  (assert (end)))
+  
+  (defrule notPescatarian
+  (is-Pescatarian N) 
+  => 
+  (printout t "Go eat at Chick-fil-a") crlf
   (assert (end)))
   
   (defrule End
