@@ -42,7 +42,7 @@
   (defrule notPescatarian
   (is-Pescatarian N) 
   => 
-  (printout t "Go eat at Chick-fil-a") crlf
+  (printout t "Go eat at Chick-fil-a" crlf) 
   (assert (end)))
   
   (defrule End
