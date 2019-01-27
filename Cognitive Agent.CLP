@@ -3,10 +3,12 @@
 ;click on the gear icon
 ;click on "load buffer" 
 ;type in (run) in the dialog
-;For now just answer either N or Y and the program will end
-  
-  
-  
+
+;Some paths we have to use as an example: 
+;  Line size: Select option 5 for line size, then choose 1-1-2 or 1-2-1 or 2-1-1, and it will give a suggestion
+;  For a Line size conflict with resolution, Choose option 5 for line size, then 1-1-1-Y-Y, then after choose option for (What I have eaten in the past couple of days), then choose an option to get a suggestion
+
+;Some of the other paths are working wierdly, but we can iron those out in the coming weeks, mainly the conflict resolution paths that go into options 3 and 4 
   
   
   ;We are resolving the time conflict issue by trying a create a more specific rule that can be used to make a decision
