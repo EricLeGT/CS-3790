@@ -5,6 +5,10 @@
 ;type in (run) in the dialog
 ;For now just answer either N or Y and the program will end
   
+  
+  
+  
+  
   ;We are resolving the time conflict issue by trying a create a more specific rule that can be used to make a decision
   (defrule TimeToEat
   (timeConflictResolve Y)
@@ -56,6 +60,7 @@
   (assert (diningDecision (read))))
   
   (defrule recencyDecision
+  (or (priority 1) (priority-two 1))
   (or (priority 1) (priority-two 1))
   =>
   (printout t "Which restaurant have you not eaten at recently? (please type in the number to select)" crlf
@@ -122,6 +127,24 @@
   
   (defrule ChickfilaChosen
   (diningDecision 3)
+  =>
+  (printout t "You should eat at Chick-fil-a.")
+  (halt))
+
+  (defrule PandaChosen
+  (has-Commitment Y) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
+  =>
+  (printout t "You should eat at Panda Express.")
+  (halt))
+
+  (defrule SubwayChosen
+  (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)
+  =>
+  (printout t "You should eat at Subway.")
+  (halt))
+
+  (defrule ChickfilaChosen
+  (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2)
   =>
   (printout t "You should eat at Chick-fil-a.")
   (halt))
