@@ -112,24 +112,7 @@
   => 
   (printout t "Imagine you are at the Student Center during lunch time. You have three options to choose
   from for lunch: Panda Express, Chick-fil-a and Subway." crlf))
-  
-  (defrule PandaChosen
-  (diningDecision 1)
-  =>
-  (printout t "You should eat at Panda Express.")
-  (halt))
-  
-  (defrule SubwayChosen
-  (diningDecision 3)
-  =>
-  (printout t "You should eat at Subway.")
-  (halt))
-  
-  (defrule ChickfilaChosen
-  (diningDecision 3)
-  =>
-  (printout t "You should eat at Chick-fil-a.")
-  (halt))
+ 
 
   (defrule PandaChosen
   (has-Commitment Y) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
@@ -145,6 +128,24 @@
 
   (defrule ChickfilaChosen
   (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2)
+  =>
+  (printout t "You should eat at Chick-fil-a.")
+  (halt))
+
+  (defrule PandaChosen
+  (diningDecision 1)
+  =>
+  (printout t "You should eat at Panda Express.")
+  (halt))
+  
+  (defrule SubwayChosen
+  (diningDecision 3)
+  =>
+  (printout t "You should eat at Subway.")
+  (halt))
+  
+  (defrule ChickfilaChosen
+  (diningDecision 3)
   =>
   (printout t "You should eat at Chick-fil-a.")
   (halt))
