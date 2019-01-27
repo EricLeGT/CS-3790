@@ -92,7 +92,8 @@
   	  (cant-eat))
   =>
   (assert (go-and-wait))
-  (printout t "You should just go eat later." crlf))
+  (printout t "You should just go eat later." crlf)
+  (halt))
   
   (defrule isHungry
   (is-hungry Y)
