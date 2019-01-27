@@ -30,8 +30,8 @@
   (SubwayLineSize 1)
   (ChickfilaLineSize 1)
   =>
-  (printout t "You seem to be on a time crunch and all the restaurants have long lines, are you sure you really need 
-  to eat lunch? (Y/N)")
+  (printout t "You seem to be on a time crunch and all the restaurants have long lines, 
+are you sure you really need to eat lunch? (Y/N)" crlf)
   (assert (timeConflictResolve (read))))
     
   (defrule assignPandaLineSize
@@ -98,8 +98,8 @@
   (defrule isHungry
   (is-hungry Y)
   =>
-  (printout t "Which one of factors is your first priority when choosing a dining location to eat at? 
-  (please type in the number to select)" crlf "1. What I have eaten in the past couple of days" crlf "2. Price" crlf
+  (printout t "Which one of these factors is your first priority when choosing a dining location to eat at? 
+  (please type in the number to select)" crlf "1. Food variety" crlf "2. Price" crlf
   "3. Nutrition" crlf "4. Cravings" crlf "5. Line size"
   crlf)
   (assert (priority (read))))
