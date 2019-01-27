@@ -106,15 +106,12 @@ are you sure you really need to eat lunch? (Y/N)" crlf)
   
   (defrule Begin
   =>
-  (printout t "Are you feeling hungry (Y/N)" crlf)
+  (printout t "Imagine you are at the Student Center during lunch time. You have three options to choose
+from for lunch: Panda Express, Chick-fil-a, and Subway.
+
+Are you feeling hungry (Y/N)" crlf)
   (assert (is-hungry (read))))
   
-  (defrule Start
-  => 
-  (printout t "Imagine you are at the Student Center during lunch time. You have three options to choose
-  from for lunch: Panda Express, Chick-fil-a and Subway." crlf))
- 
-
   (defrule PandaChosen
   (has-Commitment Y) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
   =>
