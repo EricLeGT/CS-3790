@@ -11,7 +11,7 @@
   
   ;We are resolving the time conflict issue by trying a create a more specific rule that can be used to make a decision
   (defrule TimeToEat
-  (timeConflictResolve Y)
+  (or (timeConflictResolve Y) (has-Commitment N))
   =>
   (printout t "Which one of factors is your second priority when choosing a dining location to eat at? 
   (please type in the number to select)" crlf "1. What I have eaten in the past couple of days" crlf "2. Price" crlf
@@ -89,10 +89,12 @@
 
   (defrule notHungry
   (or (is-hungry N)
-  	  (cant-eat))
+  	  (cant-eat)
+	  (timeConflictResolve N))
   =>
   (assert (go-and-wait))
-  (printout t "You should just go eat later." crlf))
+  (printout t "You should just go eat later." crlf)
+  (halt))
   
   (defrule isHungry
   (is-hungry Y)
