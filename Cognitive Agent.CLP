@@ -3,15 +3,17 @@
 ;click on the gear icon
 ;click on "load buffer" 
 ;type in (run) in the dialog
-;For now just answer either N or Y and the program will end
-  
-  
-  
+
+;Some paths we have to use as an example: 
+;  Line size: Select option 5 for line size, then choose 1-1-2 or 1-2-1 or 2-1-1, and it will give a suggestion
+;  For a Line size conflict with resolution, Choose option 5 for line size, then 1-1-1-Y-Y, then after choose option for (What I have eaten in the past couple of days), then choose an option to get a suggestion
+
+;Some of the other paths are working wierdly, but we can iron those out in the coming weeks, mainly the conflict resolution paths that go into options 3 and 4 
   
   
   ;We are resolving the time conflict issue by trying a create a more specific rule that can be used to make a decision
   (defrule TimeToEat
-  (timeConflictResolve Y)
+  (or (timeConflictResolve Y) (has-Commitment N))
   =>
   (printout t "Which one of factors is your second priority when choosing a dining location to eat at? 
   (please type in the number to select)" crlf "1. What I have eaten in the past couple of days" crlf "2. Price" crlf
@@ -89,7 +91,8 @@ are you sure you really need to eat lunch? (Y/N)" crlf)
 
   (defrule notHungry
   (or (is-hungry N)
-  	  (cant-eat))
+  	  (cant-eat)
+	  (timeConflictResolve N))
   =>
   (assert (go-and-wait))
   (printout t "You should just go eat later." crlf)
@@ -107,24 +110,24 @@ are you sure you really need to eat lunch? (Y/N)" crlf)
   (defrule Begin
   =>
   (printout t "Imagine you are at the Student Center during lunch time. You have three options to choose
-from for lunch: Panda Express, Chick-fil-a, and Subway.
+  from for lunch: Panda Express, Chick-fil-a, and Subway.
 
-Are you feeling hungry (Y/N)" crlf)
+  Are you feeling hungry (Y/N)" crlf)
   (assert (is-hungry (read))))
-  
-  (defrule PandaChosen
+
+  (defrule PandaChosenByLineSize
   (has-Commitment Y) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
   =>
   (printout t "You should eat at Panda Express.")
   (halt))
 
-  (defrule SubwayChosen
+  (defrule SubwayChosenByLineSize
   (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)
   =>
   (printout t "You should eat at Subway.")
   (halt))
 
-  (defrule ChickfilaChosen
+  (defrule ChickfilaChosenByLineSize
   (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2)
   =>
   (printout t "You should eat at Chick-fil-a.")
@@ -136,15 +139,14 @@ Are you feeling hungry (Y/N)" crlf)
   (printout t "You should eat at Panda Express.")
   (halt))
   
-  (defrule ChickfilaChosen
-  (diningDecision 2)
-  =>
-  (printout t "You should eat at Chick-fil-a.")
-  (halt))
-
   (defrule SubwayChosen
   (diningDecision 3)
   =>
   (printout t "You should eat at Subway.")
   (halt))
   
+  (defrule ChickfilaChosen
+  (diningDecision 3)
+  =>
+  (printout t "You should eat at Chick-fil-a.")
+  (halt))
