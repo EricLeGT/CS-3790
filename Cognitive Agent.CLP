@@ -15,10 +15,10 @@
   (defrule TimeToEat
   (or (timeConflictResolve Y) (has-Commitment N))
   =>
-  (printout t "Which one of factors is your second priority when choosing a dining location to eat at? 
+  (printout t "Which one of factors is your second option when choosing a dining location to eat at? 
   (please type in the number to select)" crlf "1. What I have eaten in the past couple of days" crlf "2. Price" crlf
   "3. Nutrition" crlf "4. Cravings" crlf)
-  (assert (priority-two (read))))
+  (assert (option-two (read))))
   
   (defrule noTimeToEat
   (timeConflictResolve N)
@@ -37,54 +37,54 @@ are you sure you really need to eat lunch? (Y/N)" crlf)
   (assert (timeConflictResolve (read))))
     
   (defrule assignPandaLineSize
-  (priority 5)
+  (option 5)
   =>
   (printout t "How long is the line at Panda Express? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (PandaLineSize (read))))
   
   (defrule assignSubwayLineSize
-  (priority 5)
+  (option 5)
   =>
   (printout t "How long is the line at Subway? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (SubwayLineSize (read))))
   
   (defrule assignChickfilaLineSize
-  (priority 5)
+  (option 5)
   =>
   (printout t "How long is the line at Chick-fil-a? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (ChickfilaLineSize (read))))
   
   (defrule nutritionDecision
-  (or (priority 3) (priority-two 3))
+  (or (option 3) (option-two 3))
   =>
   (printout t "Which restaurant do you think has the most nutritious food? (please type in the number to select)" crlf
   "1. Panda Express" crlf "2. Chick-fil-a" crlf "3. Subway" crlf)
   (assert (diningDecision (read))))
   
   (defrule recencyDecision
-  (or (priority 1) (priority-two 1))
-  (or (priority 1) (priority-two 1))
+  (or (option 1) (option-two 1))
+  (or (option 1) (option-two 1))
   =>
   (printout t "Which restaurant have you not eaten at recently? (please type in the number to select)" crlf
   "1. Panda Express" crlf "2. Chick-fil-a" crlf "3. Subway" crlf)
   (assert (diningDecision (read))))
   
   (defrule priceDecision
-  (or (priority 2) (priority-two 2))
+  (or (option 2) (option-two 2))
   =>
   (printout t "Which restaurant has the cheapest food? (please type in the number to select)" crlf
   "1. Panda Express" crlf "2. Chick-fil-a" crlf "3. Subway" crlf)
   (assert (diningDecision (read))))
   
   (defrule cravingsDecision
-  (or (priority 4) (priority-two 4))
+  (or (option 4) (option-two 4))
   =>
   (printout t "Which one of these dining options are you craving? (please type in the number to select)" crlf
   "1. Panda Express" crlf "2. Chick-fil-a" crlf "3. Subway" crlf)
   (assert (diningDecision (read))))
   
   (defrule Commitments
-  (priority 5)
+  (option 5)
   =>
   (printout t "Do you have a commitment after your lunch break? (Y/N)" crlf)
   (assert (has-Commitment (read))))
@@ -101,11 +101,11 @@ are you sure you really need to eat lunch? (Y/N)" crlf)
   (defrule isHungry
   (is-hungry Y)
   =>
-  (printout t "Which one of these factors is your first priority when choosing a dining location to eat at? 
+  (printout t "Which one of these factors is your first option when choosing a dining location to eat at? 
   (please type in the number to select)" crlf "1. Food variety" crlf "2. Price" crlf
   "3. Nutrition" crlf "4. Cravings" crlf "5. Line size"
   crlf)
-  (assert (priority (read))))
+  (assert (option (read))))
   
   (defrule Begin
   =>
