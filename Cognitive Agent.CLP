@@ -116,19 +116,19 @@ are you sure you really need to eat lunch? (Y/N)" crlf)
   (assert (is-hungry (read))))
 
   (defrule PandaChosenByLineSize
-  (has-Commitment Y) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
+  (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
   =>
   (printout t "You should eat at Panda Express.")
   (halt))
 
   (defrule SubwayChosenByLineSize
-  (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)
+  (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)
   =>
   (printout t "You should eat at Subway.")
   (halt))
 
   (defrule ChickfilaChosenByLineSize
-  (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2)
+  (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2)
   =>
   (printout t "You should eat at Chick-fil-a.")
   (halt))
