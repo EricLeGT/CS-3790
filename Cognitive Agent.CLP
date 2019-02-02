@@ -10,6 +10,12 @@
   ;--------------------------------------------------------------------------------------------------------------------------------
   ;Place selection
   
+  (defrule Commitments
+  (option 5)
+  =>
+  (printout t "Do you have a commitment after your lunch break? (Y/N)" crlf)
+  (assert (has-Commitment (read))))
+  
   (defrule assignPandaLineSize
   (option 5)
   =>
@@ -28,11 +34,6 @@
   (printout t "How long is the line at Chick-fil-a? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (ChickfilaLineSize (read))))
   
-  (defrule Commitments
-  (option 5)
-  =>
-  (printout t "Do you have a commitment after your lunch break? (Y/N)" crlf)
-  (assert (has-Commitment (read))))
 
   (defrule notHungry
   (or (is-hungry N)
@@ -57,23 +58,23 @@
   (assert (is-hungry (read))))
 
   (defrule PandaChosenByLineSize
-  (or (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1))
-	  (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 1)))
+  (or (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1))
+	  (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 1)))
   =>
   (assert (eatAtPanda)))
 
   (defrule SubwayChosenByLineSize
-  (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)
+  (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)
   =>
   (assert (eatAtSubway)))
 
   ;people tended to go here since lines are quick
   (defrule ChickfilaChosenByLineSize
-  (or (and (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2))
-	  (and (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 2))
-	  (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 2))
-	  (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))
-	  (and (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1)))
+  (or (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2))
+	  (and (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 2))
+	  (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 2))
+	  (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))
+	  (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1)))
   =>
   (assert (eatAtChickfila)))
 
@@ -129,6 +130,12 @@
   ;---------------
   ;Subway items
   
+  (defrule subwayDefault
+  (eatAtSubway)
+  =>
+  (printout t "You should get the Meal of the Day" crlf)
+  (halt))
+  
   (defrule subwayVeggie
   (eatAtSubway) (vegatarian Y) (chooseFoodItemNow)
   =>
@@ -136,8 +143,16 @@
   (halt))
   
   
+  
   ;---------------
   ;Panda Express items
+  
+  (defrule PandaExpressDefault
+  (eatAtPanda)
+  =>
+  (printout t "You should get some egg rolls" crlf)
+  (halt))
+  
   (defrule PandaExpressVeggie
   (eatAtPanda) (vegatarian Y) (chooseFoodItemNow)
   =>
