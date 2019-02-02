@@ -38,7 +38,8 @@
 
   (defrule notHungry
   (or (is-hungry N)
-  	  (cant-eat))
+  	  (cant-eat)
+	  (and (has-Commitment Y) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1)))
   =>
   (assert (go-and-wait))
   (printout t "You should just go eat later." crlf)
@@ -60,38 +61,37 @@
   (defrule PandaChosenByLineSize
   (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
   =>
-  (printout t "You should eat at Panda Express.")
-  (halt))
+  (assert (eatAtPanda)))
 
   (defrule SubwayChosenByLineSize
   (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)
   =>
-  (printout t "You should eat at Subway.")
-  (halt))
+  (assert (eatAtSubway)))
 
+  ;people tended to go here since lines are quick
   (defrule ChickfilaChosenByLineSize
   (or (and (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2))
 	  (and (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 2))
 	  (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 2))
-	  (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2)))
+	  (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))
+	  (and (has-Commitment N) (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1)))
   =>
-  (printout t "You should eat at Chick-fil-a.")
-  (halt))
+  (assert (eatAtChickfila)))
 
   (defrule PandaChosen
-  (diningDecision 1)
+  (eatAtPanda)
   =>
-  (printout t "You should eat at Panda Express.")
+  (printout t "Sending you to Express.")
   (halt))
   
   (defrule SubwayChosen
-  (diningDecision 3)
+  (eatAtSubway)
   =>
-  (printout t "You should eat at Subway.")
+  (printout t "Sending you to Subway.")
   (halt))
   
   (defrule ChickfilaChosen
-  (diningDecision 3)
+  (eatAtChickfila)
   =>
-  (printout t "You should eat at Chick-fil-a.")
+  (printout t "Sending you to Chick-fil-a.")
   (halt))
