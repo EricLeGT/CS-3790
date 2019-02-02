@@ -163,17 +163,25 @@
   ;---------------
   ;Chick Fila items
   
+  (defrule chickfilaDefault
+  (eatAtChickfila) (sandwiches Y)
+  =>
+  (printout t "You should get a chicken sandwich" crlf)
+  (halt))
+  
   (defrule chickfilaNuggets
   (eatAtChickfila) (chickens Y) (sandwiches N)
   =>
   (printout t "You should get the chicken nuggets" crlf)
   (halt))
   
-  (defrule chickfilaDefault
-  (eatAtChickfila) (sandwiches Y)
+  (defrule chickfilaVeggiesMaybe...
+  (eatAtChickfila) (vegatarian Y)
   =>
-  (printout t "You should get a chicken sandwich" crlf)
+  (printout t "You should get a milk shake with fries" crlf)
   (halt))
+  
+  
   
   
   
