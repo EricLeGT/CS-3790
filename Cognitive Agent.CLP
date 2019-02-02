@@ -5,13 +5,11 @@
 ;type in (run) in the dialog
 
 ;Some paths we have to use as an example: 
-;  Line size: Select option 5 for line size, then choose 1-1-2 or 1-2-1 or 2-1-1, and it will give a suggestion
-;  For a Line size conflict with resolution, Choose option 5 for line size, then 1-1-1-Y-Y, then after choose option for (What I have eaten in the past couple of days), then choose an option to get a suggestion
 
-;Some of the other paths are working wierdly, but we can iron those out in the coming weeks, mainly the conflict resolution paths that go into options 3 and 4 
+
+  ;--------------------------------------------------------------------------------------------------------------------------------
+  ;Place selection
   
-
-    
   (defrule assignPandaLineSize
   (option 5)
   =>
@@ -59,7 +57,8 @@
   (assert (is-hungry (read))))
 
   (defrule PandaChosenByLineSize
-  (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)
+  (or (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1))
+	  (and (has-Commitment N) (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 1)))
   =>
   (assert (eatAtPanda)))
 
@@ -81,17 +80,29 @@
   (defrule PandaChosen
   (eatAtPanda)
   =>
-  (printout t "Sending you to Express.")
-  (halt))
+  (printout t "Sending you to Panda Express.")
+  (assert (PlaceChosen)))
   
   (defrule SubwayChosen
   (eatAtSubway)
   =>
   (printout t "Sending you to Subway.")
-  (halt))
+  (assert (PlaceChosen)))
   
   (defrule ChickfilaChosen
   (eatAtChickfila)
   =>
   (printout t "Sending you to Chick-fil-a.")
-  (halt))
+  (assert (PlaceChosen)))
+  
+  ;--------------------------------------------------------------------------------------------------------------------------------
+  ;Preference questions
+  
+  
+  
+  
+  
+  
+  
+  ;--------------------------------------------------------------------------------------------------------------------------------
+  ;Food Rules
