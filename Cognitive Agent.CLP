@@ -80,29 +80,85 @@
   (defrule PandaChosen
   (eatAtPanda)
   =>
-  (printout t "Sending you to Panda Express.")
+  (printout t "Sending you to Panda Express." crlf)
   (assert (PlaceChosen)))
   
   (defrule SubwayChosen
   (eatAtSubway)
   =>
-  (printout t "Sending you to Subway.")
+  (printout t "Sending you to Subway." crlf)
   (assert (PlaceChosen)))
   
   (defrule ChickfilaChosen
   (eatAtChickfila)
   =>
-  (printout t "Sending you to Chick-fil-a.")
+  (printout t "Sending you to Chick-fil-a." crlf)
   (assert (PlaceChosen)))
   
   ;--------------------------------------------------------------------------------------------------------------------------------
-  ;Preference questions
+  ;Preference questions   the chooseFoodItemNow makes sure we dont select an item before gatherin all necessary info
   
+  (defrule veggies
+  (PlaceChosen)
+  =>
+  (printout t "Are you a vegatarian? (Y/N)" crlf)
+  (assert (vegatarian (read))))
   
+  (defrule veggiesOptionSelected
+  (vegatarian Y)
+  =>
+  (assert (chooseFoodItemNow)))
   
+  (defrule chickens
+  (PlaceChosen)
+  =>
+  (printout t "Are you feeling some chicken? (Y/N)" crlf)
+  (assert (chickens (read))))
   
+  (defrule sandwiches
+  (PlaceChosen)
+  =>
+  (printout t "Do you like sandwiches? (Y/N)" crlf)
+  (assert (sandwiches (read)) (chooseFoodItemNow)))
   
   
   
   ;--------------------------------------------------------------------------------------------------------------------------------
   ;Food Rules
+  
+  ;---------------
+  ;Subway items
+  
+  (defrule subwayVeggie
+  (eatAtSubway) (vegatarian Y) (chooseFoodItemNow)
+  =>
+  (printout t "You should get the Veggie Delight" crlf)
+  (halt))
+  
+  
+  ;---------------
+  ;Panda Express items
+  (defrule PandaExpressVeggie
+  (eatAtPanda) (vegatarian Y) (chooseFoodItemNow)
+  =>
+  (printout t "You should get fried rice and chow mein" crlf)
+  (halt))
+  
+  
+  ;---------------
+  ;Chick Fila items
+  
+  (defrule chickfilaNuggets
+  (eatAtChickfila) (chickens Y) (sandwiches N)
+  =>
+  (printout t "You should get the chicken nuggets" crlf)
+  (halt))
+  
+  (defrule chickfilaDefault
+  (eatAtChickfila) (sandwiches Y)
+  =>
+  (printout t "You should get a chicken sandwich" crlf)
+  (halt))
+  
+  
+  
