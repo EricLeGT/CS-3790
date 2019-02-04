@@ -9,12 +9,15 @@
 
   ;--------------------------------------------------------------------------------------------------------------------------------
   ;Place selection
-  
+  (defrule notHungry
+  (is-Hungry N)
+  =>
+  (printout t "You should just go eat later." crlf)
+  (halt))
   (defrule Start
   =>
   (printout t "Imagine you are at the Student Center during lunch time. You have three options to choose
   from for lunch: Panda Express, Chick-fil-a, and Subway.
-
   Are you feeling hungry (Y/N)" crlf)
   (assert (is-hungry (read))))
   
@@ -177,27 +180,31 @@
   (assert (is-Vegan (read))))
   
   (defrule vegetarian
-  (is-Vegan N)
+  (is-Vegan N) (PlaceChosen 1)
   =>
   (printout t "Are you vegetarian? (Y/N)" crlf)
   (assert (is-Vegetarian (read))))
   
   (defrule pescatarian
+  (PlaceChosen 1)
   =>
   (printout t "Are you pescatarian? (Y/N)" crlf)
   (assert (is-Pescatarian (read))))
   
   (defrule heavyLightMeal
+  (PlaceChosen 1)
   =>
   (printout t "Do you want to have a heavy or light meal?" crlf "1. heavy meal" crlf "2. light meal" crlf)
   (assert (meal-size (read))))
   
   (defrule chicken
+  (PlaceChosen 1)
   =>
   (printout t "Are you feeling some chicken? (Y/N)" crlf)
   (assert (chicken (read))))
   
   (defrule sandwich
+  (PlaceChosen 1)
   =>
   (printout t "Do you like sandwiches (Y/N)" crlf)
   (assert (sandwich (read))))
