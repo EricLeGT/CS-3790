@@ -170,30 +170,41 @@
   ;--------------------------------------------------------------------------------------------------------------------------------
   ;Preference questions   the chooseFoodItemNow makes sure we dont select an item before gatherin all necessary info
   
-  (defrule veggies
-  (PlaceChosen)
+  (defrule vegan
+  (PlaceChosen 1)
   =>
-  (printout t "Are you a vegatarian? (Y/N)" crlf)
-  (assert (vegatarian (read))))
+  (printout t "Are you vegan? (Y/N)" crlf)
+  (assert (is-Vegan (read))))
   
-  (defrule veggiesOptionSelected
-  (vegatarian Y)
+  (defrule vegetarian
+  (is-Vegan N)
   =>
-  (assert (chooseFoodItemNow)))
+  (printout t "Are you vegetarian? (Y/N)" crlf)
+  (assert (is-Vegetarian (read))))
   
-  (defrule chickens
-  (PlaceChosen)
+  (defrule pescatarian
+  (is-Vegatarian N)
+  =>
+  (printout t "Are you pescatarian? (Y/N)" crlf)
+  (assert (is-Pescatarian (read))))
+  
+  (defrule heavyLightMeal
+  (or (is-Vegan Y) (is-Vegatarian Y) (is-Pescatarian Y) (is-Pescatarian N))
+  =>
+  (printout t "Do you want to have a heavy or light meal?" crlf "1. heavy meal" crlf "2. light meal" crlf)
+  (assert (meal-size (read))))
+  
+  (defrule chicken
+  (and (PlaceChosen 1) (is-Vegan N) (is-Vegetarian N) (is-Pescatarian N))
   =>
   (printout t "Are you feeling some chicken? (Y/N)" crlf)
-  (assert (chickens (read))))
+  (assert (chicken (read))))
   
-  (defrule sandwiches
-  (PlaceChosen)
+  (defrule sandwich
+  (or (is-Vegan Y) (is-Vegan N))
   =>
-  (printout t "Do you like sandwiches? (Y/N)" crlf)
-  (assert (sandwiches (read)) (chooseFoodItemNow)))
-  
-  
+  (printout t "Do you like sandwiches (Y/N)" crlf)
+  (assert (sandwich (read))))
   
   ;--------------------------------------------------------------------------------------------------------------------------------
   ;Food Rules
