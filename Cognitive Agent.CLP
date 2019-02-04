@@ -183,25 +183,21 @@
   (assert (is-Vegetarian (read))))
   
   (defrule pescatarian
-  (is-Vegatarian N)
   =>
   (printout t "Are you pescatarian? (Y/N)" crlf)
   (assert (is-Pescatarian (read))))
   
   (defrule heavyLightMeal
-  (or (is-Vegan Y) (is-Vegatarian Y) (is-Pescatarian Y) (is-Pescatarian N))
   =>
   (printout t "Do you want to have a heavy or light meal?" crlf "1. heavy meal" crlf "2. light meal" crlf)
   (assert (meal-size (read))))
   
   (defrule chicken
-  (and (PlaceChosen 1) (is-Vegan N) (is-Vegetarian N) (is-Pescatarian N))
   =>
   (printout t "Are you feeling some chicken? (Y/N)" crlf)
   (assert (chicken (read))))
   
   (defrule sandwich
-  (or (is-Vegan Y) (is-Vegan N))
   =>
   (printout t "Do you like sandwiches (Y/N)" crlf)
   (assert (sandwich (read))))
@@ -253,7 +249,7 @@
   (halt))
   
   (defrule chickfilaNuggets
-  (chosenPlace Chickfila) (sandwich Y) (chicken Y)
+  (chosenPlace Chickfila) (sandwich N) (chicken Y)
   =>
   (printout t "You should get the chicken nuggets" crlf)
   (halt))
