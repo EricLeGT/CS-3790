@@ -212,53 +212,54 @@
   ;---------------
   ;Subway items
   
+  (defrule subwayVeggie
+  (chosenPlace Subway) (is-Vegatarian Y) 
+  =>
+  (printout t "You should get the Veggie Delight" crlf)
+  (halt))
+  
   (defrule subwayDefault
-  (eatAtSubway)
+  (chosenPlace Subway)
   =>
   (printout t "You should get the Meal of the Day" crlf)
   (halt))
   
-  (defrule subwayVeggie
-  (eatAtSubway) (vegatarian Y) (chooseFoodItemNow)
-  =>
-  (printout t "You should get the Veggie Delight" crlf)
-  (halt))
+  
   
   
   
   ;---------------
   ;Panda Express items
   
-  (defrule PandaExpressDefault
-  (eatAtPanda)
-  =>
-  (printout t "You should get some egg rolls" crlf)
-  (halt))
-  
   (defrule PandaExpressVeggie
-  (eatAtPanda) (vegatarian Y) (chooseFoodItemNow)
+  (chosenPlace Panda) (is-Vegatarian Y) 
   =>
   (printout t "You should get fried rice and chow mein" crlf)
   (halt))
   
+  (defrule PandaExpressDefault
+  (chosenPlace Panda)
+  =>
+  (printout t "You should get some egg rolls" crlf)
+  (halt))
   
   ;---------------
   ;Chick Fila items
   
   (defrule chickfilaDefault
-  (eatAtChickfila) (sandwiches Y)
+  (chosenPlace Chickfila) (sandwich Y)
   =>
   (printout t "You should get a chicken sandwich" crlf)
   (halt))
   
   (defrule chickfilaNuggets
-  (eatAtChickfila) (chickens Y) (sandwiches N)
+  (chosenPlace Chickfila) (sandwich Y) (chicken Y)
   =>
   (printout t "You should get the chicken nuggets" crlf)
   (halt))
   
   (defrule chickfilaVeggiesMaybe...
-  (eatAtChickfila) (vegatarian Y)
+  (chosenPlace Chickfila) (is-Vegatarian Y)
   =>
   (printout t "You should get a milk shake with fries" crlf)
   (halt))
