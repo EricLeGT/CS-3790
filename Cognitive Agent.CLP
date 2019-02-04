@@ -18,18 +18,21 @@
   
   (defrule assignPandaLineSize
   (option 5)
+  (has-Commitment Y)
   =>
   (printout t "How long is the line at Panda Express? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (PandaLineSize (read))))
   
   (defrule assignSubwayLineSize
   (option 5)
+  (has-Commitment Y)
   =>
   (printout t "How long is the line at Subway? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (SubwayLineSize (read))))
   
   (defrule assignChickfilaLineSize
   (option 5)
+  (has-Commitment Y)
   =>
   (printout t "How long is the line at Chick-fil-a? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (ChickfilaLineSize (read))))
@@ -59,7 +62,8 @@
   ;using nutrition to choose between restaurants with short lines 
   (defrule nutritionConflictRes
   (or (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))
-	  (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1)))
+	  (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1))
+	  (has-Commitment N))
   => 
   (printout t "Do you care about the nutrition value of your food? (Y/N)" crlf)
   (assert (nutrition-value (read))))
@@ -85,8 +89,8 @@
   (assert (PandaVsSubway (read))))
 
   (defrule PandaChosenByLineSizeOrRecency
-  (or (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1) 
-      (nutrition-value Y))
+  (or (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1) )
+      (nutrition-value Y)
       (PandaVsChickfila 2)
       (PandaVsSubway 2))  
   =>
@@ -226,7 +230,13 @@
   =>
   (printout t "You should get the chicken nuggets" crlf)
   (halt))
-  
+
+  (defrule waffleFries
+    (eatAtChickfila) (chickens N) (sandwiches N) (large-meal N)
+    =>
+    (printout t "You should get some waffle fries" crlf)
+    (halt))
+
   (defrule chickfilaSmallMealNoSandwich
   (eatAtChickfila) (chickens Y) (sandwiches N) (large-meal N)
   =>
