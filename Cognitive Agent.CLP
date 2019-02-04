@@ -30,7 +30,7 @@
   
   (defrule eatLater
   (or (is-hungry N)
-      (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1)))
+      (and (PandaLineSize 1) (SubwayLineSize 1) (Chick-fil-aLineSize 1)))
   =>
   (printout t "You should just go eat later." crlf)
   (halt))
@@ -47,18 +47,18 @@
   (printout t "How long is the line at Subway? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
   (assert (SubwayLineSize (read))))
   
-  (defrule assignChickfilaLineSize
+  (defrule assignChick-fil-aLineSize
   (has-Time 2)
   =>
   (printout t "How long is the line at Chick-fil-a? (type a number to select)" crlf "1. Long" crlf "2. Short" crlf)
-  (assert (ChickfilaLineSize (read))))
+  (assert (Chick-fil-aLineSize (read))))
   
   (defrule careNutrition
   (or (has-Time 1)
-      (or (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 1))
-	      (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 2))
-		  (and (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 2))
-		  (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))))
+      (or (and (PandaLineSize 2) (SubwayLineSize 2) (Chick-fil-aLineSize 1))
+	      (and (PandaLineSize 2) (SubwayLineSize 1) (Chick-fil-aLineSize 2))
+		  (and (PandaLineSize 1) (SubwayLineSize 2) (Chick-fil-aLineSize 2))
+		  (and (PandaLineSize 2) (SubwayLineSize 2) (Chick-fil-aLineSize 2))))
   =>
   (printout t "Do you care about the nutrition of the food you eat? (Y/N)" crlf)
   (assert (care-Nutrition (read))))
@@ -81,16 +81,16 @@
   
   (defrule selectNutritious_3
   (declare (salience 100))
-  (and (care-Nutrition Y) (not (PlaceChosen 1)) (ChickfilaLineSize 2))
+  (and (care-Nutrition Y) (not (PlaceChosen 1)) (Chick-fil-aLineSize 2))
   =>
-  (assert (chosenPlace Chickfila))
+  (assert (chosenPlace Chick-fil-a))
   (assert (PlaceChosen 1))
   (printout t "Sending you to Chick-fil-a." crlf))
   
   ;conflict resolution based on price  
   (defrule lastEat_1
   (and (care-Nutrition N) (not (PlaceChosen 1)) (or (has-Time 1) 
-                              (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))))
+                              (and (PandaLineSize 2) (SubwayLineSize 2) (Chick-fil-aLineSize 2))))
   =>
   (printout t "Where did you eat last? " crlf "1. Chick-fil-a" crlf "2. Subway" crlf "3. Panda Express" crlf)
   (if (= (read) 1)
@@ -118,7 +118,7 @@
      (printout t "Sending you to Panda Express." crlf)))
   
   (defrule lastEat_3
-  (and (care-Nutrition N) (has-Time 2) (not (PlaceChosen 1)) (PandaLineSize 2) (ChickfilaLineSize 2))
+  (and (care-Nutrition N) (has-Time 2) (not (PlaceChosen 1)) (PandaLineSize 2) (Chick-fil-aLineSize 2))
   =>
   (printout t "Where did you eat last? " crlf "1. Chick-fil-a" crlf "2. Panda Express" crlf)
   (if (= (read) 1)
@@ -127,12 +127,12 @@
 	 (assert (PlaceChosen 1))
      (printout t "Sending you to Panda Express." crlf)
 	 else
-	 (assert (chosenPlace Chickfila))
+	 (assert (chosenPlace Chick-fil-a))
 	 (assert (PlaceChosen 1))
      (printout t "Sending you to Chick-fil-a." crlf)))
   
   (defrule lastEat_4
-  (and (care-Nutrition N) (has-Time 2) (not (PlaceChosen 1)) (SubwayLineSize 2) (ChickfilaLineSize 2))
+  (and (care-Nutrition N) (has-Time 2) (not (PlaceChosen 1)) (SubwayLineSize 2) (Chick-fil-aLineSize 2))
   =>
   (printout t "Where did you eat last? " crlf "1. Chick-fil-a" crlf "2. Subway" crlf)
   (if (= (read) 1)
@@ -141,28 +141,28 @@
 	 (assert (PlaceChosen 1))
      (printout t "Sending you to Subway." crlf)
 	 else
-	 (assert (chosenPlace Chickfila))
+	 (assert (chosenPlace Chick-fil-a))
 	 (assert (PlaceChosen 1))
      (printout t "Sending you to Chick-fil-a." crlf)))
 	 
   (defrule lineSelect_1
-  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)))
+  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 2) (SubwayLineSize 1) (Chick-fil-aLineSize 1)))
   =>
   (assert (chosenPlace Panda))
   (assert (PlaceChosen 1))
   (printout t "Sending you to Panda Express." crlf))
   
   (defrule lineSelect_2
-  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)))
+  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 1) (SubwayLineSize 2) (Chick-fil-aLineSize 1)))
   =>
   (assert (chosenPlace Subway))
   (assert (PlaceChosen 1))
   (printout t "Sending you to Subway." crlf))
   
   (defrule lineSelect_3
-  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2)))
+  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 1) (SubwayLineSize 1) (Chick-fil-aLineSize 2)))
   =>
-  (assert (chosenPlace Chickfila))
+  (assert (chosenPlace Chick-fil-a))
   (assert (PlaceChosen 1))
   (printout t "Sending you to Chick-fil-a." crlf))
   
@@ -245,20 +245,20 @@
   ;---------------
   ;Chick Fila items
   
-  (defrule chickfilaDefault
-  (chosenPlace Chickfila) (sandwich Y)
+  (defrule Chick-fil-aDefault
+  (chosenPlace Chick-fil-a) (sandwich Y)
   =>
   (printout t "You should get a chicken sandwich" crlf)
   (halt))
   
-  (defrule chickfilaNuggets
-  (chosenPlace Chickfila) (sandwich N) (chicken Y)
+  (defrule Chick-fil-aNuggets
+  (chosenPlace Chick-fil-a) (sandwich N) (chicken Y)
   =>
   (printout t "You should get the chicken nuggets" crlf)
   (halt))
   
-  (defrule chickfilaVeggiesMaybe...
-  (chosenPlace Chickfila) (is-Vegatarian Y)
+  (defrule Chick-fil-aVeggiesMaybe...
+  (chosenPlace Chick-fil-a) (is-Vegatarian Y)
   =>
   (printout t "You should get a milk shake with fries" crlf)
   (halt))
