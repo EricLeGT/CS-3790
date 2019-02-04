@@ -58,7 +58,8 @@
   (or (has-Time 1)
       (or (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 1))
 	      (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 2))
-		  (and (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 2))))
+		  (and (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 2))
+		  (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))))
   =>
   (printout t "Do you care about the nutrition of the food you eat? (Y/N)" crlf)
   (assert (care-Nutrition (read))))
@@ -87,8 +88,63 @@
   (assert (PlaceChosen 1))
   (printout t "Sending you to Chick-fil-a." crlf))
   
+  ;conflict resolution based on price  
+  (defrule lastEat_1
+  (and (care-Nutrition N) (not (PlaceChosen 1)) (or (has-Time 1) 
+                              (and (PandaLineSize 2) (SubwayLineSize 2) (ChickfilaLineSize 2))))
+  =>
+  (printout t "Where did you eat last? " crlf "1. Chick-fil-a" crlf "2. Subway" crlf "3. Panda Express" crlf)
+  (if (= (read) 1)
+     then
+	 (assert (chosenPlace Subway))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Subway." crlf)
+	 else
+	 (assert (chosenPlace Chick-fil-a))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Chick-fil-a." crlf)))
+   
+  (defrule lastEat_2
+  (and (care-Nutrition N) (has-Time 2) (not (PlaceChosen 1)) (PandaLineSize 2) (SubwayLineSize 2))
+  =>
+  (printout t "Where did you eat last? " crlf "1. Panda Express" crlf "2. Subway" crlf)
+  (if (= (read) 1)
+     then
+	 (assert (chosenPlace Subway))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Subway." crlf)
+	 else
+	 (assert (chosenPlace Panda))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Panda Express." crlf)))
   
-    
+  (defrule lastEat_3
+  (and (care-Nutrition N) (has-Time 2) (not (PlaceChosen 1)) (PandaLineSize 2) (ChickfilaLineSize 2))
+  =>
+  (printout t "Where did you eat last? " crlf "1. Chick-fil-a" crlf "2. Panda Express" crlf)
+  (if (= (read) 1)
+     then
+	 (assert (chosenPlace Panda))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Panda Express." crlf)
+	 else
+	 (assert (chosenPlace Chickfila))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Chick-fil-a." crlf)))
+  
+  (defrule lastEat_4
+  (and (care-Nutrition N) (has-Time 2) (not (PlaceChosen 1)) (SubwayLineSize 2) (ChickfilaLineSize 2))
+  =>
+  (printout t "Where did you eat last? " crlf "1. Chick-fil-a" crlf "2. Subway" crlf)
+  (if (= (read) 1)
+     then
+	 (assert (chosenPlace Subway))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Subway." crlf)
+	 else
+	 (assert (chosenPlace Chickfila))
+	 (assert (PlaceChosen 1))
+     (printout t "Sending you to Chick-fil-a." crlf)))
   
   ;--------------------------------------------------------------------------------------------------------------------------------
   ;Preference questions   the chooseFoodItemNow makes sure we dont select an item before gatherin all necessary info
