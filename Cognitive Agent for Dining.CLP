@@ -145,6 +145,27 @@
 	 (assert (chosenPlace Chickfila))
 	 (assert (PlaceChosen 1))
      (printout t "Sending you to Chick-fil-a." crlf)))
+	 
+  (defrule lineSelect_1
+  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 2) (SubwayLineSize 1) (ChickfilaLineSize 1)))
+  =>
+  (assert (chosenPlace Panda))
+  (assert (PlaceChosen 1))
+  (printout t "Sending you to Panda Express." crlf))
+  
+  (defrule lineSelect_2
+  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 1) (SubwayLineSize 2) (ChickfilaLineSize 1)))
+  =>
+  (assert (chosenPlace Subway))
+  (assert (PlaceChosen 1))
+  (printout t "Sending you to Subway." crlf))
+  
+  (defrule lineSelect_3
+  (and (has-Time 2) (not (PlaceChosen 1)) (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 2)))
+  =>
+  (assert (chosenPlace Chickfila))
+  (assert (PlaceChosen 1))
+  (printout t "Sending you to Chick-fil-a." crlf))
   
   ;--------------------------------------------------------------------------------------------------------------------------------
   ;Preference questions   the chooseFoodItemNow makes sure we dont select an item before gatherin all necessary info
