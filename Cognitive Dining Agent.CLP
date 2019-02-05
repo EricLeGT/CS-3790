@@ -313,3 +313,9 @@
   =>
   (printout t "You should get the Chick-fil-a Fish sandwich with fries" crlf)
   (halt))
+  
+  (defrule chickfilaDefault2
+  (and (chooseFoodItemNow 1) (chosenPlace Chickfila))
+  =>
+  (printout t "You should get a side of fries" crlf)
+  (halt))
