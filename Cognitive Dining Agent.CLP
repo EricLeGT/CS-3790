@@ -21,7 +21,7 @@
   (assert (has-Time (read))))
   
   (defrule eatLater
-  (or (is-Hungry N)
+  (or (is-hungry N)
       (and (PandaLineSize 1) (SubwayLineSize 1) (ChickfilaLineSize 1)))
   =>
   (printout t "You should just go eat later." crlf)
