@@ -1,10 +1,22 @@
 public class User {
-    private static User ourInstance = new User();
 
-    public static User getInstance() {
-        return ourInstance;
+    Budget budget;
+    Preferences preferences;
+    Hunger hunger;
+    Cravings cravings;
+
+    public User(Budget budget, Preferences preferences, Hunger hunger, Cravings cravings) {
+        this.budget = budget;
+        this.preferences = preferences;
+        this.hunger = hunger;
+        this.cravings = cravings;
     }
 
-    private User() {
+    public void eat () {
+
+    }
+
+    public void waitInLine(Restaurants restaurants) {
+        //to be implemented later
     }
 }
