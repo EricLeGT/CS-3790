@@ -11,4 +11,8 @@ public class Food {
         this.nutritionalValue = nutritionalValue;
     }
 
+    public String toString() {
+        return this.name;
+    }
+
 }

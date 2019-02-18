@@ -13,6 +13,7 @@ enum Cravings {
 }
 
 enum Preferences {
+        Nutrition, NoNutrition;
 
 }
 
@@ -29,9 +30,9 @@ enum Price {
 }
 
  enum Type {
-
+        Sandwich, Combo;
 }
 
 enum NutritionalValue {
-        Low, Medium, HIgh;
+        Low, Medium, High;
 }
