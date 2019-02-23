@@ -30,7 +30,8 @@ enum Price {
 }
 
  enum Type {
-        Sandwich, Combo, Pizza, Pasta;
+        Sandwich, Combo, Pizza, Pasta, Taco, BurritoBowl, Nachos,
+     Quesadilla, Salad;
 }
 
 enum NutritionalValue {
