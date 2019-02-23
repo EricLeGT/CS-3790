@@ -30,7 +30,7 @@ enum Price {
 }
 
  enum Type {
-        Sandwich, Combo;
+        Sandwich, Combo, Pizza, Pasta;
 }
 
 enum NutritionalValue {
