@@ -19,9 +19,10 @@ public class User {
         }
 
         System.out.println("What is your budget? Type in 1, 2 or 3 (1 = low, 2 = medium, 3 = high");
-        if (scanner.nextLine().equals("1")) {
+        int budgetScanner = scanner.nextInt();
+        if (budgetScanner == 1) {
             this.budget = (Budget.Poor);
-        } else if (scanner.nextLine().equals("2")) {
+        } else if (budgetScanner == 2) {
             this.budget = (Budget.Medium);
         } else {
             this.budget = (Budget.Mad_Rich);
@@ -30,7 +31,35 @@ public class User {
 
     public void sendUserToResturant (Student_Center student_center) {
         //put some more logic to choosing a place to eat here, Panda is set to default
-        chosenRestaurant = student_center.pandaExpress;
+        Scanner scanner = new Scanner(System.in);
+        int pandaLine;
+        int subwayLine;
+        int chickFilaLine;
+        int twistedTacoLine;
+        System.out.println("How long is Panda Express' line? (1 = short, 2 = long) ");
+        pandaLine = scanner.nextInt();
+
+        System.out.println("How long is Subway's line? (1 = short, 2 = long) ");
+        subwayLine = scanner.nextInt();
+
+        System.out.println("How long is Chick Fila's line? (1 = short, 2 = long) ");
+        chickFilaLine = scanner.nextInt();
+
+        System.out.println("How long is Twisted Taco's line? (1 = short, 2 = long) ");
+        twistedTacoLine = scanner.nextInt();
+
+        if (chickFilaLine == 1) {
+            chosenRestaurant = student_center.chickFila;
+        } else if (pandaLine == 1) {
+            chosenRestaurant = student_center.pandaExpress;
+        } else if (twistedTacoLine == 1) {
+            chosenRestaurant = student_center.twistedTaco;
+        } else if (subwayLine == 1) {
+            chosenRestaurant = student_center.subway;
+        } else {
+            System.out.println("All lines are long, forcing user to Chick Fila");
+            chosenRestaurant = student_center.chickFila;
+        }
     }
 
     public void chooseItem () {
