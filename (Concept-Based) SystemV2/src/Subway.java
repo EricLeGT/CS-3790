@@ -55,4 +55,8 @@ public class Subway extends Restaurants {
         return name;
     }
 
+    public Food chooseItem () {
+        return menu.foodItems.get(0); //need to add some more logic to this, this is just a default value for now
+    }
+
 }

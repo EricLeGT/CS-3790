@@ -39,4 +39,9 @@ public class Panda_Express extends Restaurants {
 
         return foodList;
     }
+
+    public Food chooseItem () {
+        return menu.foodItems.get(0); //need to add some more logic to this, this is just a default value for now
+    }
+
 }
