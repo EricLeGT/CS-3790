@@ -12,6 +12,10 @@ enum Cravings {
 
 }
 
+enum DietPref{
+    Vegetarian, Pescatarian, None, Vegan;
+}
+
 enum Preferences {
         Nutrition, NoNutrition;
 
@@ -31,7 +35,7 @@ enum Price {
 
  enum Type {
         Sandwich, Combo, Pizza, Pasta, Taco, BurritoBowl, Nachos,
-     Quesadilla, Salad;
+     Quesadilla, Salad, Fries, Nuggets, Drink, Side;
 }
 
 enum NutritionalValue {
