@@ -3,19 +3,19 @@ import java.util.Scanner;
 public class User {
 
     Budget budget;
-    Preferences preferences;
+    NutritionPreference preferences;
     Hunger hunger;
     Cravings cravings;
-    Restaurants chosenRestaurant;
+    Restaurant chosenRestaurant;
     Food chosenFoodItem;
 
     public User() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Do you care about nutrition? (Type in Y or N)");
         if (scanner.nextLine().equals("Y")) {
-            this.preferences = (Preferences.Nutrition);
+            this.preferences = (NutritionPreference.Nutrition);
         } else {
-            this.preferences = (Preferences.NoNutrition);
+            this.preferences = (NutritionPreference.NoNutrition);
         }
 
         System.out.println("What is your budget? Type in 1, 2 or 3 (1 = low, 2 = medium, 3 = high");
@@ -64,7 +64,7 @@ public class User {
 
     public void chooseItem () {
         //call the chosen resturaunt's chooseItem method
-        chosenFoodItem = chosenRestaurant.chooseItem();
+        chosenFoodItem = chosenRestaurant.chooseFoodItem(preferences, budget);
     }
 
 
@@ -78,7 +78,7 @@ public class User {
         }
     }
 
-    public void waitInLine(Restaurants restaurants) {
+    public void waitInLine(Restaurant restaurant) {
         //to be implemented later
     }
 
@@ -91,11 +91,11 @@ public class User {
         System.out.println("Setting the user's budget");
     }
 
-    public Preferences getPreferences() {
+    public NutritionPreference getPreferences() {
         return preferences;
     }
 
-    public void setPreferences(Preferences preferences) {
+    public void setPreferences(NutritionPreference preferences) {
         this.preferences = preferences;
         System.out.println("Setting the user's preference");
     }

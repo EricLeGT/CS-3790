@@ -5,7 +5,11 @@ public class Enums {
 }
 
 enum Budget {
-        Poor, Medium, Mad_Rich;
+        Poor(5.00), Medium(12.00), Mad_Rich(25.00);
+        public double limit;
+        Budget(double lim) {
+            limit = lim;
+        }
 }
 
 enum Cravings {
@@ -16,13 +20,20 @@ enum DietPref{
     Vegetarian, Pescatarian, None, Vegan;
 }
 
-enum Preferences {
+enum NutritionPreference {
         Nutrition, NoNutrition;
 
 }
 
 enum Hunger {
-        Hungry, Not_Hungry;
+        Pants_OnFire_Hungry(2000, 1000), Moderately_Hungry (1200, 700), Slightly_Hungry (800, 0);
+
+        public int upper, lower;
+        Hunger(int upperCal, int lowerCal) {
+            upper = upperCal;
+            lower = lowerCal;
+        }
+
 }
 
 enum Line {

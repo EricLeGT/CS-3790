@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class Rays extends Restaurants {
+public class Rays extends Restaurant {
 
 
     String name;
@@ -12,7 +14,8 @@ public class Rays extends Restaurants {
         this.menu = new Menu(true, createFoodList());
     }
 
-    private ArrayList<Food> createFoodList() {
+    @Override
+    public ArrayList<Food> createFoodList() {
         ArrayList<Food> foodList = new ArrayList<>();
         Food cheesePizza = new Food("Cheese Pizza", Price.Cheap, 2.95, Type.Pizza, NutritionalValue.Low, 380, DietPref.Vegetarian);
         Food pepperoniPizza = new Food("Pepperoni Pizza", Price.Cheap, 3.75, Type.Pizza, NutritionalValue.Low, 430, DietPref.None);
@@ -36,5 +39,13 @@ public class Rays extends Restaurants {
         foodList.add(veggiePennePasta);
 
         return foodList;
+    }
+
+    @Override
+    public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {
+        Random r = new Random();
+        List<Food> potentialOrders = FoodPredicates.filterFood(this.menu.foodItems,
+                FoodPredicates.nutritional(userpref), FoodPredicates.price(budget));
+        return potentialOrders.get(r.nextInt(potentialOrders.size()));
     }
 }

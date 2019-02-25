@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class Panda_Express extends Restaurants {
+public class Panda_Express extends Restaurant {
     String name;
     Menu menu;
 
@@ -10,7 +12,8 @@ public class Panda_Express extends Restaurants {
         this.menu = new Menu(true, createFoodList());
     }
 
-    private ArrayList<Food> createFoodList() {
+    @Override
+    public ArrayList<Food> createFoodList() {
         ArrayList<Food> foodList = new ArrayList<>();
         Food orangeChickFR = new Food("Orange Chicken with Fried Rice", Price.Medium, 6.20, Type.Combo, NutritionalValue.Medium, 1010, DietPref.None);
         Food stringBeanChickBR = new Food("String Bean Chicken Breast with Brown Steamed Rice", Price.Medium, 6.20, Type.Combo, NutritionalValue.Medium, 610, DietPref.None);
@@ -44,8 +47,11 @@ public class Panda_Express extends Restaurants {
         return name;
     }
 
-    public Food chooseItem () {
-        return menu.foodItems.get(0); //need to add some more logic to this, this is just a default value for now
+    @Override
+    public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {
+        Random r = new Random();
+        List<Food> potentialOrders = FoodPredicates.filterFood(this.menu.foodItems,
+                FoodPredicates.nutritional(userpref), FoodPredicates.price(budget));
+        return potentialOrders.get(r.nextInt(potentialOrders.size()));
     }
-
 }

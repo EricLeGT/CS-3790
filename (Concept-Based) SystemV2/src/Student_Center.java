@@ -1,22 +1,22 @@
 public class Student_Center {
-    Restaurants pandaExpress;
-    Restaurants subway;
-    Restaurants chickFila;
-    Restaurants twistedTaco;
+    Restaurant pandaExpress;
+    Restaurant subway;
+    Restaurant chickFila;
+    Restaurant twistedTaco;
 
-    public void setPanda(Restaurants restaurants) {
-        this.pandaExpress = restaurants;
+    public void setPanda(Restaurant restaurant) {
+        this.pandaExpress = restaurant;
     }
 
-    public void setSubway(Restaurants restaurants) {
-        this.subway = restaurants;
+    public void setSubway(Restaurant restaurant) {
+        this.subway = restaurant;
     }
 
-    public void setChickFila(Restaurants restaurants) {
-        this.chickFila = restaurants;
+    public void setChickFila(Restaurant restaurant) {
+        this.chickFila = restaurant;
     }
 
-    public void setTwistedTaco(Restaurants restaurants) {
-        this.twistedTaco = restaurants;
+    public void setTwistedTaco(Restaurant restaurant) {
+        this.twistedTaco = restaurant;
     }
 }

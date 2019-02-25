@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class Subway extends Restaurants {
+public class Subway extends Restaurant {
 
     String name;
     Menu menu;
@@ -10,7 +12,8 @@ public class Subway extends Restaurants {
         this.menu = new Menu(true, createFoodList());
     }
 
-    private ArrayList<Food> createFoodList() {
+    @Override
+    public ArrayList<Food> createFoodList() {
         ArrayList<Food> foodList = new ArrayList<>();
         Food turkeyBreast = new Food("Turkey Breast Sub", Price.Medium,7.00, Type.Sandwich, NutritionalValue.High, 560, DietPref.None);
         Food roastBeef = new Food("Roast Beef Sub", Price.Medium,8.00, Type.Sandwich, NutritionalValue.High, 640, DietPref.None);
@@ -59,4 +62,12 @@ public class Subway extends Restaurants {
         return menu.foodItems.get(0); //need to add some more logic to this, this is just a default value for now
     }
 
+
+    @Override
+    public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {
+        Random r = new Random();
+        List<Food> potentialOrders = FoodPredicates.filterFood(this.menu.foodItems,
+                FoodPredicates.nutritional(userpref), FoodPredicates.price(budget));
+        return potentialOrders.get(r.nextInt(potentialOrders.size()));
+    }
 }
