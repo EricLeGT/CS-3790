@@ -7,6 +7,7 @@ public class Rays extends Restaurant {
 
     String name;
     Menu menu;
+    Line lineSize;
 
 
     public Rays() {
@@ -40,6 +41,15 @@ public class Rays extends Restaurant {
 
         return foodList;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setLineSize(Line lineSize) {
+        this.lineSize = lineSize;
+    }
+
 
     @Override
     public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {

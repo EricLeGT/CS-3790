@@ -16,6 +16,10 @@ enum Cravings {
 
 }
 
+enum Emotion {
+    Positive, Negative;
+}
+
 enum DietPref{
     Vegetarian, Pescatarian, None, Vegan;
 }

@@ -6,6 +6,7 @@ public class Subway extends Restaurant {
 
     String name;
     Menu menu;
+    Line lineSize;
 
     public Subway() {
         this.name = "Subway";
@@ -60,6 +61,14 @@ public class Subway extends Restaurant {
 
     public Food chooseItem () {
         return menu.foodItems.get(0); //need to add some more logic to this, this is just a default value for now
+    }
+
+    public void setLineSize(Line lineSize) {
+        this.lineSize = lineSize;
+    }
+
+    public String getName() {
+        return name;
     }
 
 

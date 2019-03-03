@@ -5,6 +5,7 @@ import java.util.Random;
 public class Twisted_Taco extends Restaurant {
     String name;
     Menu menu;
+    Line lineSize;
 
 
     public Twisted_Taco() {
@@ -86,6 +87,14 @@ public class Twisted_Taco extends Restaurant {
 
     public String toString() {
         return name;
+    }
+
+    public void setLineSize(Line lineSize) {
+        this.lineSize = lineSize;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.Random;
 public class Chick_Fila extends Restaurant {
     String name;
     Menu menu;
+    Line lineSize;
 
     public Chick_Fila() {
         this.name = "Chick-fil-a";
@@ -46,6 +47,14 @@ public class Chick_Fila extends Restaurant {
 
     public String toString() {
         return name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setLineSize(Line lineSize) {
+        this.lineSize = lineSize;
     }
 
     @Override

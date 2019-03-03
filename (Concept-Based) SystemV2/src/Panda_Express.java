@@ -5,6 +5,7 @@ import java.util.Random;
 public class Panda_Express extends Restaurant {
     String name;
     Menu menu;
+    Line lineSize;
 
 
     public Panda_Express() {
@@ -46,6 +47,16 @@ public class Panda_Express extends Restaurant {
     public String toString() {
         return name;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setLineSize(Line lineSize) {
+        this.lineSize = lineSize;
+    }
+
+
 
     @Override
     public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {

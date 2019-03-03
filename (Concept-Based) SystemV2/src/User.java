@@ -1,4 +1,5 @@
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -6,79 +7,131 @@ public class User {
     NutritionPreference preferences;
     Hunger hunger;
     Cravings cravings;
-    Restaurant chosenRestaurant;
-    Food chosenFoodItem;
+    String badExperience;
+    List<Restaurant> restaurantList = new ArrayList<>();
+    DietPref dietPref;
+    Emotion emotion;
 
-    public User() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Do you care about nutrition? (Type in Y or N)");
-        if (scanner.nextLine().equals("Y")) {
-            this.preferences = (NutritionPreference.Nutrition);
+    public User(String[] userString) {
+        restaurantList.add(new Panda_Express());
+        restaurantList.add(new Twisted_Taco());
+        restaurantList.add(new Chick_Fila());
+        restaurantList.add(new Rays());
+        restaurantList.add(new Subway());
+
+        if (userString[0].equals("1")) {
+            System.out.println("setting budget");
+            this.budget = Budget.Poor;
+        } else if(userString[1].equals("2")) {
+            this.budget = Budget.Medium;
         } else {
-            this.preferences = (NutritionPreference.NoNutrition);
+            this.budget = Budget.Mad_Rich;
         }
 
-        System.out.println("What is your budget? Type in 1, 2 or 3 (1 = low, 2 = medium, 3 = high");
-        int budgetScanner = scanner.nextInt();
-        if (budgetScanner == 1) {
-            this.budget = (Budget.Poor);
-        } else if (budgetScanner == 2) {
-            this.budget = (Budget.Medium);
+        if (userString[1].equals("N")) {
+            this.preferences = NutritionPreference.NoNutrition.NoNutrition;
         } else {
-            this.budget = (Budget.Mad_Rich);
+            this.preferences = NutritionPreference.Nutrition;
+        }
+
+        if (userString[2].equals("Vegetarian")) {
+            this.dietPref = DietPref.Vegetarian;
+        } else if (userString[2].equals("Vegan")) {
+            this.dietPref = DietPref.Vegan;
+        } else if (userString[2].equals("Pescatarian")) {
+            this.dietPref = DietPref.Pescatarian;
+        } else {
+            this.dietPref = DietPref.None;
+        }
+
+        if (userString[3].equals("Y")) {
+            this.hunger = Hunger.Slightly_Hungry;
+        } else {
+            this.hunger = Hunger.Moderately_Hungry;
+        }
+
+        if (userString[4].equals("Positive")) {
+            this.emotion = Emotion.Positive;
+        } else {
+            emotion = Emotion.Negative;
+        }
+
+        if (userString[5].equals("1")) {
+            restaurantList.get(1).setLineSize(Line.Short);
+        } else if (userString[5].equals("2")) {
+            restaurantList.get(1).setLineSize(Line.Medium);
+        } else {
+            restaurantList.get(1).setLineSize(Line.Long);
+        }
+
+        if (userString[6].equals("1")) {
+            restaurantList.get(1).setLineSize(Line.Short);
+        } else if (userString[6].equals("2")) {
+            restaurantList.get(1).setLineSize(Line.Medium);
+        } else {
+            restaurantList.get(1).setLineSize(Line.Long);
+        }
+
+        if (userString[7].equals("1")) {
+            restaurantList.get(1).setLineSize(Line.Short);
+        } else if (userString[7].equals("2")) {
+            restaurantList.get(1).setLineSize(Line.Medium);
+        } else {
+            restaurantList.get(1).setLineSize(Line.Long);
+        }
+
+        if (userString[8].equals("1")) {
+            restaurantList.get(1).setLineSize(Line.Short);
+        } else if (userString[8].equals("2")) {
+            restaurantList.get(1).setLineSize(Line.Medium);
+        } else {
+            restaurantList.get(1).setLineSize(Line.Long);
+        }
+
+        if (userString[9].equals("1")) {
+            restaurantList.get(1).setLineSize(Line.Short);
+        } else if (userString[9].equals("2")) {
+            restaurantList.get(1).setLineSize(Line.Medium);
+        } else {
+            restaurantList.get(1).setLineSize(Line.Long);
+        }
+
+        badExperience = userString[10];
+
+    }
+
+    public User(Budget budget, NutritionPreference preferences, Hunger hunger, Cravings cravings) {
+        this.budget = budget;
+        this.preferences = preferences;
+        this.hunger = hunger;
+        this.cravings = cravings;
+        this.restaurantList = new ArrayList<>();
+        restaurantList.add(new Panda_Express());
+        restaurantList.add(new Twisted_Taco());
+        restaurantList.add(new Subway());
+        restaurantList.add(new Rays());
+        restaurantList.add(new Chick_Fila());
+
+    }
+
+    public void removeBadExperience() {
+        System.out.println(restaurantList.size());
+        for(int i = restaurantList.size() - 1;  i > -1; i--) {
+            //System.out.println(badExperience);
+            //System.out.println(restaurantList.get(i).getName());
+            if (badExperience.equals(restaurantList.get(i).getName())) {
+                System.out.printf("%s has been removed from the list of restaurant " +
+                        "options based on the User's past experiences.", restaurantList.get(i).getName());
+                restaurantList.remove(i);
+            }
         }
     }
-
-    public void sendUserToResturant (Student_Center student_center) {
-        //put some more logic to choosing a place to eat here, Panda is set to default
-        Scanner scanner = new Scanner(System.in);
-        int pandaLine;
-        int subwayLine;
-        int chickFilaLine;
-        int twistedTacoLine;
-        System.out.println("How long is Panda Express' line? (1 = short, 2 = long) ");
-        pandaLine = scanner.nextInt();
-
-        System.out.println("How long is Subway's line? (1 = short, 2 = long) ");
-        subwayLine = scanner.nextInt();
-
-        System.out.println("How long is Chick Fila's line? (1 = short, 2 = long) ");
-        chickFilaLine = scanner.nextInt();
-
-        System.out.println("How long is Twisted Taco's line? (1 = short, 2 = long) ");
-        twistedTacoLine = scanner.nextInt();
-
-        if (chickFilaLine == 1) {
-            chosenRestaurant = student_center.chickFila;
-        } else if (pandaLine == 1) {
-            chosenRestaurant = student_center.pandaExpress;
-        } else if (twistedTacoLine == 1) {
-            chosenRestaurant = student_center.twistedTaco;
-        } else if (subwayLine == 1) {
-            chosenRestaurant = student_center.subway;
-        } else {
-            System.out.println("All lines are long, forcing user to Chick Fila");
-            chosenRestaurant = student_center.chickFila;
-        }
-    }
-
-    public void chooseItem () {
-        //call the chosen resturaunt's chooseItem method
-        chosenFoodItem = chosenRestaurant.chooseFoodItem(preferences, budget);
-    }
-
-
-
 
     public void eat () {
-        if (chosenFoodItem == null) {
-            System.out.println("Nothing to eat");
-        } else {
-            System.out.println("Go nom on " + chosenFoodItem);
-        }
+
     }
 
-    public void waitInLine(Restaurant restaurant) {
+    public void waitInLine(Restaurant restaurants) {
         //to be implemented later
     }
 
@@ -90,6 +143,7 @@ public class User {
         this.budget = budget;
         System.out.println("Setting the user's budget");
     }
+
 
     public NutritionPreference getPreferences() {
         return preferences;
