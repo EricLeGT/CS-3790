@@ -4,12 +4,13 @@ import java.util.List;
 public class User {
 
     Budget budget;
-    NutritionPreference preferences;
+    NutritionPreference nutritionPreference;
     Hunger hunger;
     Cravings cravings;
     String badExperience;
     List<Restaurant> restaurantList = new ArrayList<>();
     DietPref dietPref;
+    Commitment commitment;
     Emotion emotion;
 
     public User(String[] userString) {
@@ -29,9 +30,9 @@ public class User {
         }
 
         if (userString[1].equals("N")) {
-            this.preferences = NutritionPreference.NoNutrition.NoNutrition;
+            this.nutritionPreference = NutritionPreference.NoNutrition.;
         } else {
-            this.preferences = NutritionPreference.Nutrition;
+            this.nutritionPreference = NutritionPreference.Nutrition;
         }
 
         if (userString[2].equals("Vegetarian")) {
@@ -98,11 +99,17 @@ public class User {
 
         badExperience = userString[10];
 
+        if (userString[11].equals("Y")) {
+            commitment = Commitment.Yes;
+        } else {
+            commitment = Commitment.No;
+        }
+
     }
 
     public User(Budget budget, NutritionPreference preferences, Hunger hunger, Cravings cravings) {
         this.budget = budget;
-        this.preferences = preferences;
+        this.nutritionPreference = preferences;
         this.hunger = hunger;
         this.cravings = cravings;
         this.restaurantList = new ArrayList<>();
@@ -124,6 +131,22 @@ public class User {
                 System.out.printf("%s has been removed from the list of restaurant " +
                         "options based on the User's past experiences.", restaurantList.get(i).getName());
                 restaurantList.remove(i);
+            }
+        }
+    }
+
+    /**
+     * Filtering based on dietary preferences
+     * If the user is vegan then they cannot go to every restaurant.
+     */
+
+    public void filterDietaryPreferences() {
+        if(this.dietPref.equals(DietPref.Vegan)) {
+            for (Restaurant r: restaurantList) {
+                if (r.getName().equals("Panda Express") ||
+                r.getName().equals("Rays")) {
+                    restaurantList.remove(r);
+                }
             }
         }
     }
@@ -151,7 +174,7 @@ public class User {
         }
     }
 
-    //
+
 
     public void eat () {
 
@@ -172,11 +195,11 @@ public class User {
 
 
     public NutritionPreference getPreferences() {
-        return preferences;
+        return nutritionPreference;
     }
 
     public void setPreferences(NutritionPreference preferences) {
-        this.preferences = preferences;
+        this.nutritionPreference = preferences;
         System.out.println("Setting the user's preference");
     }
 

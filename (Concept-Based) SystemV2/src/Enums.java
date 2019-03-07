@@ -29,6 +29,10 @@ enum NutritionPreference {
 
 }
 
+enum Commitment {
+    Yes, No;
+}
+
 enum Hunger {
         Pants_OnFire_Hungry(2000, 1000), Moderately_Hungry (1200, 700), Slightly_Hungry (800, 0);
 

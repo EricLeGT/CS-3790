@@ -18,29 +18,38 @@ public class main {
         User user1  = new User(userInfo);
         user1.removeBadExperience();
 
+        //this method filters based on the dietary preferences
+        user1.filterDietaryPreferences();
+
         //this method call takes out restaurants that have a really long line size
+        if (user1.commitment.equals(Commitment.Yes)) {
+            user1.removeLongWaittime();
+        }
+
+        //setting the Nutrition preference of the User based on their emotion
+        //regardless of what their long-term views on nutrition are
+        if (user1.emotion.equals(Emotion.Negative)) {
+            user1.setPreferences(NutritionPreference.NoNutrition);
+        }
+
+
 
 
 
 
 //        System.out.println("Setting up a new User and asking for parameters");
 //        User user = new User();
-//
 //        System.out.println("Instantiating Restaurants into Student Center");
 //        Student_Center student_center = new Student_Center();
 //        student_center.setPanda(new Panda_Express());
 //        student_center.setSubway(new Subway());
 //        student_center.setChickFila(new Chick_Fila());
 //        student_center.setTwistedTaco(new Twisted_Taco());
-//
 //        user.sendUserToResturant(student_center);
 //        System.out.println("Sending User to " + user.chosenRestaurant);
-//
 //        System.out.println("User is choosing an item");
 //        user.chooseItem();
 //        user.eat();
-//
-//
 //        System.out.println("Thats as far as we got : D");
     }
 }
