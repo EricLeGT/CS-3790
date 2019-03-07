@@ -67,6 +67,8 @@ public class Subway extends Restaurant {
         this.lineSize = lineSize;
     }
 
+    public Line getLineSize() {return lineSize;}
+
     public String getName() {
         return name;
     }

@@ -50,6 +50,8 @@ public class Rays extends Restaurant {
         this.lineSize = lineSize;
     }
 
+    public Line getLineSize() {return lineSize;}
+
 
     @Override
     public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {

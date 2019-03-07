@@ -93,6 +93,8 @@ public class Twisted_Taco extends Restaurant {
         this.lineSize = lineSize;
     }
 
+    public Line getLineSize() {return lineSize;}
+
     public String getName() {
         return this.name;
     }

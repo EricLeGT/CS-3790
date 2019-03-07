@@ -11,8 +11,17 @@ public class main {
         String userLine = userFile.nextLine();
         String delimiter = ",";
         String[] userInfo = userLine.split(delimiter);
+
+        //Subgoal 1: picking the restaurant for the user to go to
+
+        //this method call takes out restaurants the User has had a bad experience with
         User user1  = new User(userInfo);
         user1.removeBadExperience();
+
+        //this method call takes out restaurants that have a really long line size
+
+
+
 
 //        System.out.println("Setting up a new User and asking for parameters");
 //        User user = new User();

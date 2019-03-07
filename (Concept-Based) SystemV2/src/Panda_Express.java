@@ -56,7 +56,7 @@ public class Panda_Express extends Restaurant {
         this.lineSize = lineSize;
     }
 
-
+    public Line getLineSize() {return lineSize;}
 
     @Override
     public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {

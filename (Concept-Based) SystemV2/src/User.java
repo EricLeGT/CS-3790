@@ -114,6 +114,7 @@ public class User {
 
     }
 
+    //this method filters based on a bad experience that the user has had in the past
     public void removeBadExperience() {
         System.out.println(restaurantList.size());
         for(int i = restaurantList.size() - 1;  i > -1; i--) {
@@ -126,6 +127,31 @@ public class User {
             }
         }
     }
+
+    /** this method filters out restaurants that have a long wait time
+     *  however this filter only happens if there is at least on restaurant
+     *  doesn't have a long wait time
+     */
+    public void removeLongWaittime() {
+
+        boolean allLong = true;
+
+        for (Restaurant r: restaurantList) {
+            if (!r.getLineSize().equals(Line.Long)) {
+                allLong = false;
+            }
+        }
+
+        if (!allLong) {
+            for (Restaurant r: restaurantList) {
+                if(r.getLineSize().equals(Line.Long)) {
+                    restaurantList.remove(r);
+                }
+            }
+        }
+    }
+
+    //
 
     public void eat () {
 
