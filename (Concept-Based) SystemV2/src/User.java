@@ -129,7 +129,7 @@ public class User {
             //System.out.println(restaurantList.get(i).getName());
             if (badExperience.equals(restaurantList.get(i).getName())) {
                 System.out.printf("%s has been removed from the list of restaurant " +
-                        "options based on the User's past experiences.", restaurantList.get(i).getName());
+                        "options based on the User's past experiences.\n", restaurantList.get(i).getName());
                 restaurantList.remove(i);
             }
         }
@@ -217,5 +217,28 @@ public class User {
 
     public void setCravings(Cravings cravings) {
         this.cravings = cravings;
+    }
+
+    public void filterEverything() {
+        filterDietaryPreferences();
+        System.out.println("User: Remove past bad experiences");
+        removeBadExperience();
+
+        //this method filters based on the dietary preferences
+        System.out.println("User: Filter out Diertary prefenence");
+        filterDietaryPreferences();
+
+        //this method call takes out restaurants that have a really long line size
+        System.out.println("User: Filter out commitments");
+        if (commitment.equals(Commitment.Yes)) {
+            removeLongWaittime();
+        }
+
+        //setting the Nutrition preference of the User based on their emotion
+        //regardless of what their long-term views on nutrition are
+        System.out.println("User: Setting emotion and preferences");
+        if (emotion.equals(Emotion.Negative)) {
+            setPreferences(NutritionPreference.NoNutrition);
+        }
     }
 }

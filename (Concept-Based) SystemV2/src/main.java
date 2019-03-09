@@ -16,27 +16,9 @@ public class main {
 
         //this method call takes out restaurants the User has had a bad experience with
         User user1  = new User(userInfo);
-        System.out.println("Main: Remove Bad EXP");
-        user1.removeBadExperience();
+        System.out.println("Main: Calling User to filter everything");
+        user1.filterEverything();
 
-        //this method filters based on the dietary preferences
-        System.out.println("\nMain: Filter out Diertary prefenence");
-        user1.filterDietaryPreferences();
-
-        //this method call takes out restaurants that have a really long line size
-        System.out.println("\nMain: Filter out commitments");
-        if (user1.commitment.equals(Commitment.Yes)) {
-            user1.removeLongWaittime();
-        }
-
-        //setting the Nutrition preference of the User based on their emotion
-        //regardless of what their long-term views on nutrition are
-        System.out.println("\nMain: Setting emotion and preferences");
-        if (user1.emotion.equals(Emotion.Negative)) {
-            user1.setPreferences(NutritionPreference.NoNutrition);
-        }
-
-        user1.filterDietaryPreferences();
         System.out.println("Main: Choosing Restaurant");
         Food eatThis = user1.restaurantList.get(0).chooseFoodItem(user1.nutritionPreference, user1.budget);
         System.out.println("Go eat some " + eatThis + " at " + user1.restaurantList.get(0));
