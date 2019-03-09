@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Sandwich {
-    Bread bread;
+    /*Bread bread;
     Protein protein;
     Sauce sauce;
     ArrayList<Toppings> toppings;
-    Cheese cheese;
+    Cheese cheese;*/
 }

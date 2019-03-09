@@ -1,5 +1,5 @@
 public class BurritoBowl extends Food{
-    Name name;
+    /*Name name;
     BlackBeans blackBeans;
     Cheese cheese;
     YellowRice yellowRice;
@@ -9,5 +9,5 @@ public class BurritoBowl extends Food{
     Jalapeno jalapeno;
     Cilantro cilantro;
     Salsa salsa;
-    Protein protein;
+    Protein protein;*/
 }

@@ -30,7 +30,7 @@ public class User {
         }
 
         if (userString[1].equals("N")) {
-            this.nutritionPreference = NutritionPreference.NoNutrition.;
+            this.nutritionPreference = NutritionPreference.NoNutrition;
         } else {
             this.nutritionPreference = NutritionPreference.Nutrition;
         }
@@ -159,11 +159,11 @@ public class User {
 
         boolean allLong = true;
 
-        for (Restaurant r: restaurantList) {
+        /*for (Restaurant r: restaurantList) { //this is giving a null pointer here, fix it or get rid of it
             if (!r.getLineSize().equals(Line.Long)) {
                 allLong = false;
             }
-        }
+        }*/
 
         if (!allLong) {
             for (Restaurant r: restaurantList) {

@@ -52,7 +52,9 @@ public class Rays extends Restaurant {
 
     public Line getLineSize() {return lineSize;}
 
-
+    public String toString() {
+        return name;
+    }
     @Override
     public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {
         Random r = new Random();
