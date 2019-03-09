@@ -7,6 +7,10 @@ public class Food {
     int calories;
     DietPref dietPref;
 
+    public Food() {
+        this.name = name;
+    }
+
     public Food(String name, Price price, Double priceVal, Type type, NutritionalValue nutritionalValue, int calories, DietPref dietPref) {
         this.name = name;
         this.price = price;

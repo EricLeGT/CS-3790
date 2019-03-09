@@ -33,10 +33,6 @@ public class main {
         }
 
 
-
-
-
-
 //        System.out.println("Setting up a new User and asking for parameters");
 //        User user = new User();
 //        System.out.println("Instantiating Restaurants into Student Center");
