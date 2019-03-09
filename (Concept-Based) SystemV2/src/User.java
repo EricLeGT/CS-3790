@@ -177,7 +177,6 @@ public class User {
 
 
     public void eat () {
-
     }
 
     public void waitInLine(Restaurant restaurants) {
