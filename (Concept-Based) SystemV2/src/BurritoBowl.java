@@ -1,13 +1,10 @@
+import java.util.ArrayList;
+
 public class BurritoBowl extends Food{
-    /*Name name;
+    String name;
     BlackBeans blackBeans;
     Cheese cheese;
-    YellowRice yellowRice;
-    Lettuce lettuce;
-    PicoDeGallo picoDeGallo;
-    SourCream sourCream;
-    Jalapeno jalapeno;
-    Cilantro cilantro;
-    Salsa salsa;
-    Protein protein;*/
+    Rice rice;
+    ArrayList<Toppings> toppings;
+    Protein protein;
 }

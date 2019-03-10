@@ -77,3 +77,59 @@ enum PastaSauce {
     Ragu;
 }
 
+enum BlackBeans {
+    Yes, No;
+}
+
+enum Cheese {
+    Mozzarella, Goat, Cheddar;
+}
+
+enum Rice {
+    Yellow, White, Brown, Spanish, Fried;
+}
+
+enum Toppings {
+    Lettuce, PicoDeGallo, SourCream, Jalapeno, Cilantro, Salsa;
+}
+
+enum Protein {
+    Chicken, GrilledChicken, Tofu, Pork, Beef;
+}
+
+enum DrinkSize {
+    small, medium, large;
+}
+
+enum Temperature {
+    hot, cold;
+}
+
+enum Chips {
+    corn;
+}
+
+enum Crust {
+    thin, thick;
+}
+
+enum PizzaSauce {
+    red, white, pesto;
+}
+
+enum Tortilla {
+    flour, corn;
+}
+
+enum SaladGreens {
+    spinach, lettuce, mix;
+}
+
+enum SaladDressing {
+    BalsamicVinagrette, Italian, Ranch;
+}
+
+enum Bread {
+    Italian, White, WholeWheat;
+}
+

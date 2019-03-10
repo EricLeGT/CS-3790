@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Pizza {
-    /*Crust crust;
+    Crust crust;
     PizzaSauce pizzaSauce;
     ArrayList<Toppings> toppings;
-    Cheese cheese;*/
+    Cheese cheese;
 }
