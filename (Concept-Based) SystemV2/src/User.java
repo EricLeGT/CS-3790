@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class User {
@@ -12,6 +14,7 @@ public class User {
     DietPref dietPref;
     Commitment commitment;
     Emotion emotion;
+    Restaurant restaurantChosen;
 
     public User(String[] userString) {
         restaurantList.add(new Panda_Express());
@@ -21,7 +24,7 @@ public class User {
         restaurantList.add(new Subway());
 
         if (userString[0].equals("1")) {
-            System.out.println("setting budget");
+            //System.out.println("setting budget");
             this.budget = Budget.Poor;
         } else if(userString[1].equals("2")) {
             this.budget = Budget.Medium;
@@ -58,11 +61,11 @@ public class User {
         }
 
         if (userString[5].equals("1")) {
-            restaurantList.get(1).setLineSize(Line.Short);
+            restaurantList.get(0).setLineSize(Line.Short);
         } else if (userString[5].equals("2")) {
-            restaurantList.get(1).setLineSize(Line.Medium);
+            restaurantList.get(0).setLineSize(Line.Medium);
         } else {
-            restaurantList.get(1).setLineSize(Line.Long);
+            restaurantList.get(0).setLineSize(Line.Long);
         }
 
         if (userString[6].equals("1")) {
@@ -74,27 +77,27 @@ public class User {
         }
 
         if (userString[7].equals("1")) {
-            restaurantList.get(1).setLineSize(Line.Short);
+            restaurantList.get(2).setLineSize(Line.Short);
         } else if (userString[7].equals("2")) {
-            restaurantList.get(1).setLineSize(Line.Medium);
+            restaurantList.get(2).setLineSize(Line.Medium);
         } else {
-            restaurantList.get(1).setLineSize(Line.Long);
+            restaurantList.get(2).setLineSize(Line.Long);
         }
 
         if (userString[8].equals("1")) {
-            restaurantList.get(1).setLineSize(Line.Short);
+            restaurantList.get(3).setLineSize(Line.Short);
         } else if (userString[8].equals("2")) {
-            restaurantList.get(1).setLineSize(Line.Medium);
+            restaurantList.get(3).setLineSize(Line.Medium);
         } else {
-            restaurantList.get(1).setLineSize(Line.Long);
+            restaurantList.get(3).setLineSize(Line.Long);
         }
 
         if (userString[9].equals("1")) {
-            restaurantList.get(1).setLineSize(Line.Short);
+            restaurantList.get(4).setLineSize(Line.Short);
         } else if (userString[9].equals("2")) {
-            restaurantList.get(1).setLineSize(Line.Medium);
+            restaurantList.get(4).setLineSize(Line.Medium);
         } else {
-            restaurantList.get(1).setLineSize(Line.Long);
+            restaurantList.get(4).setLineSize(Line.Long);
         }
 
         badExperience = userString[10];
@@ -123,7 +126,7 @@ public class User {
 
     //this method filters based on a bad experience that the user has had in the past
     public void removeBadExperience() {
-        System.out.println(restaurantList.size());
+        //System.out.println(restaurantList.size());
         for(int i = restaurantList.size() - 1;  i > -1; i--) {
             //System.out.println(badExperience);
             //System.out.println(restaurantList.get(i).getName());
@@ -142,10 +145,10 @@ public class User {
 
     public void filterDietaryPreferences() {
         if(this.dietPref.equals(DietPref.Vegan)) {
-            for (Restaurant r: restaurantList) {
-                if (r.getName().equals("Panda Express") ||
-                r.getName().equals("Rays")) {
-                    restaurantList.remove(r);
+            for(int i = restaurantList.size() - 1;  i > -1; i--) {
+                if (restaurantList.get(i).getName().equals("Panda Express") ||
+                        restaurantList.get(i).getName().equals("Rays")) {
+                    restaurantList.remove(i);
                 }
             }
         }
@@ -159,16 +162,17 @@ public class User {
 
         boolean allLong = true;
 
-        /*for (Restaurant r: restaurantList) { //this is giving a null pointer here, fix it or get rid of it
+        for (Restaurant r: restaurantList) { //this is giving a null pointer here, fix it or get rid of it
+            //System.out.println(r.getLineSize());
             if (!r.getLineSize().equals(Line.Long)) {
                 allLong = false;
             }
-        }*/
+        }
 
         if (!allLong) {
-            for (Restaurant r: restaurantList) {
-                if(r.getLineSize().equals(Line.Long)) {
-                    restaurantList.remove(r);
+            for(int i = restaurantList.size() - 1;  i > -1; i--) {
+                if (Line.Long.equals(restaurantList.get(i).getLineSize())) {
+                    restaurantList.remove(i);
                 }
             }
         }
@@ -219,12 +223,12 @@ public class User {
     }
 
     public void filterEverything() {
-        filterDietaryPreferences();
+        //filterDietaryPreferences();
         System.out.println("User: Remove past bad experiences");
         removeBadExperience();
 
         //this method filters based on the dietary preferences
-        System.out.println("User: Filter out Diertary prefenence");
+        System.out.println("User: Filter out dietary preference");
         filterDietaryPreferences();
 
         //this method call takes out restaurants that have a really long line size
@@ -239,5 +243,17 @@ public class User {
         if (emotion.equals(Emotion.Negative)) {
             setPreferences(NutritionPreference.NoNutrition);
         }
+
+        //Sorting the list based on general ranking (if user doesn't care about nutrition)
+        if (this.nutritionPreference.equals(NutritionPreference.NoNutrition)) {
+            restaurantList.sort((o1, o2) -> o1.getTasteRank() - o2.getTasteRank());
+        } else {
+            //Sorting the list based on ranking (if the user does care about nutrition)
+            //Sorting the list based on general ranking (if user doesn't care about nutrition)
+            restaurantList.sort((o1, o2) -> o1.getNutritionRank() - o2.getNutritionRank());
+        }
+
+        restaurantChosen = restaurantList.get(0);
+
     }
 }

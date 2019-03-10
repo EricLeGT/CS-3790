@@ -19,6 +19,8 @@ public class main {
         System.out.println("Main: Calling User to filter everything");
         user1.filterEverything();
 
+        System.out.println(user1.restaurantChosen);
+
         System.out.println("Main: Choosing Restaurant");
         Food eatThis = user1.restaurantList.get(0).chooseFoodItem(user1.nutritionPreference, user1.budget);
         System.out.println("Go eat some " + eatThis + " at " + user1.restaurantList.get(0));

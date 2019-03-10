@@ -8,6 +8,8 @@ public class Rays extends Restaurant {
     String name;
     Menu menu;
     Line lineSize;
+    public int tasteRank = 5;
+    public int nutritionRank = 5;
 
 
     public Rays() {
@@ -40,6 +42,14 @@ public class Rays extends Restaurant {
         foodList.add(veggiePennePasta);
 
         return foodList;
+    }
+
+    public int getTasteRank() {
+        return 5;
+    }
+
+    public int getNutritionRank() {
+        return 5;
     }
 
     public String getName() {

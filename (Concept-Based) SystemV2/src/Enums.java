@@ -60,3 +60,20 @@ enum Price {
 enum NutritionalValue {
         Low, Medium, High;
 }
+
+enum Size {
+    Small, Medium, Large;
+}
+
+enum Sauce {
+    ChickFilASauce, BarbequeSauce;
+}
+
+enum PastaType {
+    Penne, Lasagna, Spaghetti;
+}
+
+enum PastaSauce {
+    Ragu;
+}
+

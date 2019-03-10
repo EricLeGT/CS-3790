@@ -7,6 +7,8 @@ public class Subway extends Restaurant {
     String name;
     Menu menu;
     Line lineSize;
+    public int tasteRank = 3;
+    public int nutritionRank = 1 ;
 
     public Subway() {
         this.name = "Subway";
@@ -55,6 +57,14 @@ public class Subway extends Restaurant {
         return foodList;
     }
 
+    public int getTasteRank() {
+        return 3;
+    }
+
+    public int getNutritionRank() {
+        return 1;
+    }
+
     public String toString() {
         return name;
     }
@@ -72,7 +82,6 @@ public class Subway extends Restaurant {
     public String getName() {
         return name;
     }
-
 
     @Override
     public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {

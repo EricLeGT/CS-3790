@@ -6,6 +6,8 @@ public class Twisted_Taco extends Restaurant {
     String name;
     Menu menu;
     Line lineSize;
+    public int tasteRank = 2;
+    public int nutritionRank = 4;
 
 
     public Twisted_Taco() {
@@ -83,6 +85,14 @@ public class Twisted_Taco extends Restaurant {
         foodList.add(chickenSalad);
         foodList.add(steakSalad);
         return foodList;
+    }
+
+    public int getTasteRank() {
+        return 2;
+    }
+
+    public int getNutritionRank() {
+        return 4;
     }
 
     public String toString() {

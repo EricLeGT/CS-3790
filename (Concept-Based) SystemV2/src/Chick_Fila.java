@@ -6,6 +6,8 @@ public class Chick_Fila extends Restaurant {
     String name;
     Menu menu;
     Line lineSize;
+    public int tasteRank = 1;
+    public int nutritionRank = 3;
 
     public Chick_Fila() {
         this.name = "Chick-fil-a";
@@ -43,6 +45,14 @@ public class Chick_Fila extends Restaurant {
         foodList.add(largeShake);
 
         return foodList;
+    }
+
+    public int getTasteRank() {
+        return 1;
+    }
+
+    public int getNutritionRank() {
+        return 3;
     }
 
     public String toString() {

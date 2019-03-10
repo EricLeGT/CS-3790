@@ -6,6 +6,8 @@ public class Panda_Express extends Restaurant {
     String name;
     Menu menu;
     Line lineSize;
+    public int tasteRank = 4;
+    public int nutritionRank = 2;
 
 
     public Panda_Express() {
@@ -42,6 +44,15 @@ public class Panda_Express extends Restaurant {
 
 
         return foodList;
+    }
+
+
+    public int getTasteRank() {
+        return 4;
+    }
+
+    public int getNutritionRank() {
+        return 2;
     }
 
     public String toString() {
