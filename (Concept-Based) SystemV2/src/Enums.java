@@ -90,7 +90,8 @@ enum Rice {
 }
 
 enum Toppings {
-    Lettuce, PicoDeGallo, SourCream, Jalapeno, Cilantro, Salsa;
+    Lettuce, PicoDeGallo, SourCream, Jalapeno, Cilantro, Salsa,
+    Avocado, Pepperoni, Peppers, Olives, Corn;
 }
 
 enum Protein {

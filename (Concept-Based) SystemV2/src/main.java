@@ -19,7 +19,7 @@ public class main {
         System.out.println("Main: Calling User to filter everything");
         user1.filterEverything();
 
-        System.out.println(user1.restaurantChosen);
+        //System.out.println(user1.restaurantChosen);
 
         System.out.println("Main: Choosing Restaurant");
         Food eatThis = user1.restaurantChosen.chooseFoodItem(user1.nutritionPreference, user1.budget);
