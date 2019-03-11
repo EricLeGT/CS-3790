@@ -27,10 +27,20 @@ public class FoodPredicates {
     }
 
     public static List<Food> filterFood(List<Food> foodItems,
-                                                  Predicate<Food> predicate1, Predicate<Food> predicate2) {
+                                        Predicate<Food> predicate1) {
+        return foodItems.stream()
+                .filter(predicate1)
+                .collect(Collectors.<Food>toList());
+    }
+
+    public static List<Food> filterFood(List<Food> foodItems,
+                                                  Predicate<Food> predicate1, Predicate<Food> predicate2,
+                                        Predicate<Food> predicate3, Predicate<Food> predicate4) {
         return foodItems.stream()
                 .filter(predicate1)
                 .filter(predicate2)
+                .filter(predicate3)
+                .filter(predicate4)
                 .collect(Collectors.<Food>toList());
     }
 }

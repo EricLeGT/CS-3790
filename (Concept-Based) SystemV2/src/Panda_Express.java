@@ -70,10 +70,18 @@ public class Panda_Express extends Restaurant {
     public Line getLineSize() {return lineSize;}
 
     @Override
-    public Food chooseFoodItem(NutritionPreference userpref, Budget budget) {
+    public Food chooseFoodItem(NutritionPreference userpref, Budget budget, DietPref dietPref, Hunger hunger) {
         Random r = new Random();
+        System.out.println("Restaurant: Filter options based on budget and preferences");
         List<Food> potentialOrders = FoodPredicates.filterFood(this.menu.foodItems,
-                FoodPredicates.nutritional(userpref), FoodPredicates.price(budget));
+                FoodPredicates.nutritional(userpref), FoodPredicates.price(budget),
+                FoodPredicates.dietaryRestriction(dietPref), FoodPredicates.hungerCaloric(hunger));
+        if (potentialOrders.size() == 0) {
+            potentialOrders = FoodPredicates.filterFood(this.menu.foodItems, FoodPredicates.dietaryRestriction(dietPref));
+            if (potentialOrders.size() == 0) {
+                return null;
+            }
+        }
         return potentialOrders.get(r.nextInt(potentialOrders.size()));
     }
 }

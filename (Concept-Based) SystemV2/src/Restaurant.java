@@ -7,7 +7,7 @@ public abstract class Restaurant {
     public int tasteRank;
     public int nutritionRank;
     public abstract ArrayList<Food> createFoodList();
-    public abstract Food chooseFoodItem(NutritionPreference userpref, Budget budget);
+    public abstract Food chooseFoodItem(NutritionPreference userpref, Budget budget, DietPref dietPref, Hunger hunger);
 
     public String getName() {
         return restaurantName;

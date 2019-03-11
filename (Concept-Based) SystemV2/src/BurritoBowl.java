@@ -7,4 +7,12 @@ public class BurritoBowl extends Food{
     Rice rice;
     ArrayList<Toppings> toppings;
     Protein protein;
+
+    public BurritoBowl(String name, Price price, Double priceVal, Type type, NutritionalValue nutritionalValue, int calories, DietPref dietPref) {
+        super(name, price, priceVal, type, nutritionalValue, calories, dietPref);
+    }
+
+    public String toString() {
+        return this.name;
+    }
 }
