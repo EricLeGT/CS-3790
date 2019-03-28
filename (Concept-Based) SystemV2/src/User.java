@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
@@ -16,6 +15,13 @@ public class User {
     Emotion emotion;
     Restaurant restaurantChosen;
 
+    double EFfactor;
+    int pandatimes;
+    int twistedtimes;
+    int chickfilatimes;
+    int raystimes;
+    int subwaytimes;
+
     public User(String[] userString) {
         restaurantList.add(new Panda_Express());
         restaurantList.add(new Twisted_Taco());
@@ -24,9 +30,8 @@ public class User {
         restaurantList.add(new Subway());
 
         if (userString[0].equals("1")) {
-            //System.out.println("setting budget");
             this.budget = Budget.Poor;
-        } else if(userString[1].equals("2")) {
+        } else if(userString[0].equals("2")) {
             this.budget = Budget.Medium;
         } else {
             this.budget = Budget.Mad_Rich;
@@ -107,6 +112,14 @@ public class User {
         } else {
             commitment = Commitment.No;
         }
+
+        EFfactor = Double.parseDouble(userString[12]);
+        pandatimes = Integer.parseInt(userString[13]);
+        twistedtimes = Integer.parseInt(userString[14]);
+        chickfilatimes = Integer.parseInt(userString[15]);
+        raystimes = Integer.parseInt(userString[16]);
+        subwaytimes = Integer.parseInt(userString[17]);
+
 
     }
 
@@ -193,7 +206,6 @@ public class User {
 
     public void setBudget(Budget budget) {
         this.budget = budget;
-        System.out.println("Setting the user's budget");
     }
 
 
@@ -255,5 +267,34 @@ public class User {
 
         restaurantChosen = restaurantList.get(0);
 
+    }
+
+    public double getRestaurantScore(Restaurant restaurant) {
+        int num_times = (restaurant.getName().equals("Panda Express")) ? pandatimes
+                      : (restaurant.getName().equals("Twisted Taco")) ? twistedtimes
+                      : (restaurant.getName().equals("Chick-fil-a")) ? chickfilatimes
+                      : (restaurant.getName().equals("Rays")) ? raystimes
+                      : subwaytimes;
+        int total_times = pandatimes + twistedtimes + chickfilatimes + raystimes + subwaytimes;
+        double restaurantScore = ((1 - EFfactor) / total_times) + (EFfactor / (num_times + 0.5));
+        //System.out.println(" is leaning towards " + individualArgmax().getName());
+        return  restaurantScore;
+    }
+
+    public Restaurant individualArgmax() {
+        List<Double> scores = new ArrayList<>();
+        for (Restaurant restaurant : restaurantList) {
+            scores.add(getRestaurantScore(restaurant));
+        }
+        double max = pandatimes;
+        Restaurant argmax = restaurantList.get(0);
+        for (int i = 0; i < scores.size(); i++) {
+            double score = scores.get(i);
+            if (score > max) {
+                max = score;
+                argmax = restaurantList.get(i);
+            }
+        }
+        return argmax;
     }
 }
