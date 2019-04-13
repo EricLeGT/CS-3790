@@ -5,10 +5,25 @@ public class Enums {
 }
 
 enum Budget {
-        Poor(5.00), Medium(12.00), Mad_Rich(25.00);
+        Poor(5.00, 1), Medium(12.00, 2), Mad_Rich(25.00, 3);
         public double limit;
-        Budget(double lim) {
+        public int choice;
+        Budget(double lim, int ch) {
             limit = lim;
+            choice = ch;
+        }
+
+        public int getChoice() {
+            return choice;
+        }
+
+        public static Budget getBudget(int ch) {
+            for (Budget b : Budget.values()) {
+                if (b.choice == ch) {
+                    return b;
+                }
+            }
+            return null;
         }
 }
 

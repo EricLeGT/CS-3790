@@ -112,7 +112,6 @@ public class Twisted_Taco extends Restaurant {
     @Override
     public Food chooseFoodItem(NutritionPreference userpref, Budget budget, DietPref dietPref, Hunger hunger) {
         Random r = new Random();
-        System.out.println("Restaurant: Filter options based on budget and preferences");
         List<Food> potentialOrders = FoodPredicates.filterFood(this.menu.foodItems,
                 FoodPredicates.nutritional(userpref), FoodPredicates.price(budget),
                 FoodPredicates.dietaryRestriction(dietPref), FoodPredicates.hungerCaloric(hunger));
