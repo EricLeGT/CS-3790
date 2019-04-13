@@ -149,3 +149,15 @@ enum Bread {
     Italian, White, WholeWheat;
 }
 
+enum Leadership {
+    Yes, No;
+}
+
+enum Altruism {
+    Low, Medium, High;
+}
+
+enum Opinion {
+    Low, Medium, High;
+}
+

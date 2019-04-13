@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class User {
 
@@ -16,11 +17,19 @@ public class User {
     Restaurant restaurantChosen;
 
     double EFfactor;
+    Leadership leadership;
+    int deferredGratification;
+    Altruism altruism;
     int pandatimes;
     int twistedtimes;
     int chickfilatimes;
     int raystimes;
     int subwaytimes;
+    Opinion pandaOpinion;
+    Opinion twistedOpinion;
+    Opinion chickfilaOpinion;
+    Opinion raysOpinion;
+    Opinion subwayOpinion;
 
     public User(String[] userString) {
         restaurantList.add(new Panda_Express());
@@ -114,11 +123,68 @@ public class User {
         }
 
         EFfactor = Double.parseDouble(userString[12]);
-        pandatimes = Integer.parseInt(userString[13]);
-        twistedtimes = Integer.parseInt(userString[14]);
-        chickfilatimes = Integer.parseInt(userString[15]);
-        raystimes = Integer.parseInt(userString[16]);
-        subwaytimes = Integer.parseInt(userString[17]);
+
+        if (userString[13].equals("Y")) {
+            this.leadership = Leadership.Yes;
+        } else {
+            this.leadership = Leadership.No;
+        }
+
+        this.deferredGratification = Integer.parseInt(userString[14]);
+
+        if (userString[15].equals("1")) {
+            this.altruism = Altruism.Low;
+        } else if(userString[15].equals("2")) {
+            this.altruism = Altruism.Low;
+        } else {
+            this.altruism = Altruism.High;
+        }
+
+        pandatimes = Integer.parseInt(userString[16]);
+        twistedtimes = Integer.parseInt(userString[17]);
+        chickfilatimes = Integer.parseInt(userString[18]);
+        raystimes = Integer.parseInt(userString[19]);
+        subwaytimes = Integer.parseInt(userString[20]);
+
+        if (userString[21].equals("1")) {
+            this.pandaOpinion = Opinion.Low;
+        } else if(userString[21].equals("2")) {
+            this.pandaOpinion = Opinion.Medium;
+        } else {
+            this.pandaOpinion = Opinion.High;
+        }
+
+        if (userString[22].equals("1")) {
+            this.twistedOpinion = Opinion.Low;
+        } else if(userString[21].equals("2")) {
+            this.twistedOpinion = Opinion.Medium;
+        } else {
+            this.twistedOpinion = Opinion.High;
+        }
+
+        if (userString[23].equals("1")) {
+            this.chickfilaOpinion = Opinion.Low;
+        } else if(userString[23].equals("2")) {
+            this.chickfilaOpinion = Opinion.Medium;
+        } else {
+            this.chickfilaOpinion = Opinion.High;
+        }
+
+        if (userString[24].equals("1")) {
+            this.raysOpinion = Opinion.Low;
+        } else if(userString[24].equals("2")) {
+            this.raysOpinion = Opinion.Medium;
+        } else {
+            this.raysOpinion = Opinion.High;
+        }
+
+        if (userString[25].equals("1")) {
+            this.subwayOpinion = Opinion.Low;
+        } else if(userString[25].equals("2")) {
+            this.subwayOpinion = Opinion.Medium;
+        } else {
+            this.subwayOpinion = Opinion.High;
+        }
 
 
     }
