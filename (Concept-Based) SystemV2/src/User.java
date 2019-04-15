@@ -30,6 +30,7 @@ public class User {
     Opinion chickfilaOpinion;
     Opinion raysOpinion;
     Opinion subwayOpinion;
+    int userNum;
 
     public User(String[] userString) {
         restaurantList.add(new Panda_Express());
@@ -185,8 +186,7 @@ public class User {
         } else {
             this.subwayOpinion = Opinion.High;
         }
-
-
+        this.userNum = Integer.parseInt(userString[26]);
     }
 
     public User(Budget budget, NutritionPreference preferences, Hunger hunger, Cravings cravings) {
@@ -210,8 +210,8 @@ public class User {
             //System.out.println(badExperience);
             //System.out.println(restaurantList.get(i).getName());
             if (badExperience.equals(restaurantList.get(i).getName())) {
-                System.out.printf("%s has been removed from the list of restaurant " +
-                        "options based on the User's past experiences.\n", restaurantList.get(i).getName());
+                //System.out.printf("%s has been removed from the list of restaurant " +
+                       // "options based on the User's past experiences.\n", restaurantList.get(i).getName());
                 restaurantList.remove(i);
             }
         }
@@ -281,7 +281,7 @@ public class User {
 
     public void setPreferences(NutritionPreference preferences) {
         this.nutritionPreference = preferences;
-        System.out.println("Setting the user's preference");
+        //System.out.println("Setting the user's preference");
     }
 
     public Hunger getHunger() {
@@ -302,22 +302,22 @@ public class User {
 
     public void filterEverything() {
         //filterDietaryPreferences();
-        System.out.println("User: Remove past bad experiences");
+        //System.out.println("User: Remove past bad experiences");
         removeBadExperience();
 
         //this method filters based on the dietary preferences
-        System.out.println("User: Filter out dietary preference");
+        //System.out.println("User: Filter out dietary preference");
         filterDietaryPreferences();
 
         //this method call takes out restaurants that have a really long line size
-        System.out.println("User: Filter out commitments");
+        //System.out.println("User: Filter out commitments");
         if (commitment.equals(Commitment.Yes)) {
             removeLongWaittime();
         }
 
         //setting the Nutrition preference of the User based on their emotion
         //regardless of what their long-term views on nutrition are
-        System.out.println("User: Setting emotion and preferences");
+        //System.out.println("User: Setting emotion and preferences");
         if (emotion.equals(Emotion.Negative)) {
             setPreferences(NutritionPreference.NoNutrition);
         }
@@ -331,7 +331,7 @@ public class User {
             restaurantList.sort((o1, o2) -> o1.getNutritionRank() - o2.getNutritionRank());
         }
 
-        restaurantChosen = restaurantList.get(0);
+        restaurantChosen = individualArgmax();
 
     }
 
@@ -342,7 +342,7 @@ public class User {
                       : (restaurant.getName().equals("Rays")) ? raystimes
                       : subwaytimes;
         int total_times = pandatimes + twistedtimes + chickfilatimes + raystimes + subwaytimes;
-        double restaurantScore = ((1 - EFfactor) / total_times) + (EFfactor / (num_times + 0.5));
+        double restaurantScore = ((1 - EFfactor) / total_times) + (EFfactor / (100 * num_times + 0.5));
         //System.out.println(" is leaning towards " + individualArgmax().getName());
         return  restaurantScore;
     }

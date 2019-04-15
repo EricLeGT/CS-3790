@@ -5,6 +5,7 @@ import java.util.*;
 public class main {
     public static void main(String args[]) throws FileNotFoundException {
 
+        //userdata csv userline format: budget ,nutritional preference,dietary preference ,hunger,emotion,panda ls,twisted ls,cfa ls ,rays ls ,subway ls,bad ex,has commitment ,EF trait ,leadership ,deferred gratification ,altruism ,#times at panda ,#times at twisted,#time at cfa,#times at rays ,#times at subway,panda opinion ,twisted opinion ,chickfila opinion,rays opinion ,subway opinion
 
         File userdata = new File("./src/userdata.csv");
         Scanner reader = new Scanner(userdata);
@@ -37,7 +38,31 @@ public class main {
                 System.out.println("Go eat some " + eatThis + " at " + user1.restaurantList.get(0));
             }
         } else {
-            Restaurant groupChoice;
+            //Leader selection
+            User groupLeader;
+            List<User> leaderCandidates = new ArrayList<>();
+
+            Random rand = new Random();
+            for (User user : users) {
+                if (user.leadership == Leadership.Yes) {
+                    leaderCandidates.add(user);
+                }
+            }
+            if (leaderCandidates.isEmpty()) {
+                groupLeader = users.get(rand.nextInt(users.size()));
+            } else {
+                groupLeader = leaderCandidates.get(rand.nextInt(leaderCandidates.size()));
+            }
+
+            //Restaurant discussion
+            System.out.println("Individual-" + groupLeader.userNum + ": \"Where does everyone want to go?\"");
+            for (User user : users) {
+                user.filterEverything();
+                System.out.println("Individual-" + user.userNum + ": \"I want to go to " + user.restaurantChosen.getName());
+            }
+
+
+            /*Restaurant groupChoice;
             int budgets = 0;
             Map<Restaurant, Double> groupRestaurantSelections = new HashMap<>();
             for (Restaurant restaurant : restaurants) {
@@ -78,7 +103,7 @@ public class main {
                 } else {
                     System.out.println("\nUser-" + u + " has chosen to eat " + eatThis);
                 }
-            }
+            }*/
         }
     }
 
