@@ -19,7 +19,7 @@ public class User {
     double EFfactor;
     Leadership leadership;
     int deferredGratification;
-    Altruism altruism;
+    double altruism;
     int pandatimes;
     int twistedtimes;
     int chickfilatimes;
@@ -133,13 +133,7 @@ public class User {
 
         this.deferredGratification = Integer.parseInt(userString[14]);
 
-        if (userString[15].equals("1")) {
-            this.altruism = Altruism.Low;
-        } else if(userString[15].equals("2")) {
-            this.altruism = Altruism.Low;
-        } else {
-            this.altruism = Altruism.High;
-        }
+        this.altruism = Double.parseDouble(userString[15]);
 
         pandatimes = Integer.parseInt(userString[16]);
         twistedtimes = Integer.parseInt(userString[17]);

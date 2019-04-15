@@ -58,7 +58,10 @@ public class main {
             System.out.println("Individual-" + groupLeader.userNum + ": \"Where does everyone want to go?\"");
             for (User user : users) {
                 user.filterEverything();
-                System.out.println("Individual-" + user.userNum + ": \"I want to go to " + user.restaurantChosen.getName());
+                System.out.print("Individual-" + user.userNum + ": \"I want to go to " + user.restaurantChosen.getName());
+                if (user.EFfactor > 0.5) {
+                    System.out.println()
+                }
             }
 
 
