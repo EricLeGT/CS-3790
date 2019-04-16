@@ -60,7 +60,7 @@ public class main {
                 user.filterEverything();
                 System.out.print("Individual-" + user.userNum + ": \"I want to go to " + user.restaurantChosen.getName());
                 if (user.EFfactor > 0.5) {
-                    System.out.println()
+                    System.out.println();
                 }
             }
 
