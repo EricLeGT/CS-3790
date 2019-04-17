@@ -1,10 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import javafx.scene.effect.Effect;
+
+import java.util.*;
 
 public class User {
 
+    String[] userString;
     Budget budget;
     NutritionPreference nutritionPreference;
     Hunger hunger;
@@ -15,6 +15,11 @@ public class User {
     Commitment commitment;
     Emotion emotion;
     Restaurant restaurantChosen;
+    Restaurant groupRestaurant;
+    Reason reasonForRestaurantChosen;
+    double Degree;
+    
+    Food foodItemChosen;
 
     double EFfactor;
     Leadership leadership;
@@ -30,9 +35,17 @@ public class User {
     Opinion chickfilaOpinion;
     Opinion raysOpinion;
     Opinion subwayOpinion;
+    Line pandals;
+    Line twistedls;
+    Line chickfilals;
+    Line raysls;
+    Line subwayls;
     int userNum;
 
+    Map<User, UserModel> userModelMap;
+
     public User(String[] userString) {
+        this.userString = userString;
         restaurantList.add(new Panda_Express());
         restaurantList.add(new Twisted_Taco());
         restaurantList.add(new Chick_Fila());
@@ -77,42 +90,57 @@ public class User {
 
         if (userString[5].equals("1")) {
             restaurantList.get(0).setLineSize(Line.Short);
+            pandals = Line.Short;
         } else if (userString[5].equals("2")) {
             restaurantList.get(0).setLineSize(Line.Medium);
+            pandals = Line.Medium;
         } else {
             restaurantList.get(0).setLineSize(Line.Long);
+            pandals = Line.Long;
         }
 
         if (userString[6].equals("1")) {
             restaurantList.get(1).setLineSize(Line.Short);
+            twistedls = Line.Short;
         } else if (userString[6].equals("2")) {
             restaurantList.get(1).setLineSize(Line.Medium);
+            twistedls = Line.Medium;
         } else {
             restaurantList.get(1).setLineSize(Line.Long);
+            twistedls = Line.Long;
         }
 
         if (userString[7].equals("1")) {
             restaurantList.get(2).setLineSize(Line.Short);
+            chickfilals = Line.Short;
         } else if (userString[7].equals("2")) {
             restaurantList.get(2).setLineSize(Line.Medium);
+            chickfilals = Line.Medium;
         } else {
             restaurantList.get(2).setLineSize(Line.Long);
+            chickfilals = Line.Long;
         }
 
         if (userString[8].equals("1")) {
             restaurantList.get(3).setLineSize(Line.Short);
+            raysls = Line.Short;
         } else if (userString[8].equals("2")) {
             restaurantList.get(3).setLineSize(Line.Medium);
+            raysls = Line.Medium;
         } else {
             restaurantList.get(3).setLineSize(Line.Long);
+            raysls = Line.Long;
         }
 
         if (userString[9].equals("1")) {
             restaurantList.get(4).setLineSize(Line.Short);
+            subwayls = Line.Short;
         } else if (userString[9].equals("2")) {
             restaurantList.get(4).setLineSize(Line.Medium);
+            subwayls = Line.Medium;
         } else {
             restaurantList.get(4).setLineSize(Line.Long);
+            subwayls = Line.Long;
         }
 
         badExperience = userString[10];
@@ -181,6 +209,10 @@ public class User {
             this.subwayOpinion = Opinion.High;
         }
         this.userNum = Integer.parseInt(userString[26]);
+
+        userModelMap = new HashMap<>();
+
+        this.Degree = (1 - altruism) * (deferredGratification + 1);
     }
 
     public User(Budget budget, NutritionPreference preferences, Hunger hunger, Cravings cravings) {
@@ -251,6 +283,29 @@ public class User {
         }
     }
 
+    public void removeBasedOnOpinion() {
+        for(int i = restaurantList.size() - 1;  i > -1; i--) {
+            Opinion relevantOpinion;
+
+            if (restaurantList.get(i).getName().equals("Panda Express")) {
+                relevantOpinion = pandaOpinion;
+            } else if (restaurantList.get(i).getName().equals("Rays")) {
+                relevantOpinion = raysOpinion;
+            } else if (restaurantList.get(i).getName().equals("Chick-fil-a")) {
+                relevantOpinion = chickfilaOpinion;
+            } else if (restaurantList.get(i).getName().equals("Twisted Taco")) {
+                relevantOpinion = pandaOpinion;
+            } else {
+                relevantOpinion = subwayOpinion;
+            }
+
+            if (relevantOpinion.equals(Opinion.Low)) {
+                restaurantList.remove(i);
+            }
+
+        }
+    }
+
 
 
     public void eat () {
@@ -295,6 +350,10 @@ public class User {
     }
 
     public void filterEverything() {
+
+        //if user has a low opinion of that restaurant, remove it
+        removeBasedOnOpinion();
+
         //filterDietaryPreferences();
         //System.out.println("User: Remove past bad experiences");
         removeBadExperience();
@@ -325,8 +384,48 @@ public class User {
             restaurantList.sort((o1, o2) -> o1.getNutritionRank() - o2.getNutritionRank());
         }
 
+        //figure out a way to generate the reason for choosing the restaurant
+        //this.reasonForRestaurantChosen = getReason();
+
         restaurantChosen = individualArgmax();
 
+    }
+
+    public Reason getReason() {
+        int relevantTimes;
+        Opinion relevantOpinion;
+        if (restaurantChosen.getName().equals("Panda Express")) {
+            relevantTimes = pandatimes;
+            relevantOpinion = pandaOpinion;
+        } else if (restaurantChosen.getName().equals("Rays")) {
+            relevantTimes = raystimes;
+            relevantOpinion = raysOpinion;
+        } else if (restaurantChosen.getName().equals("Chick-fil-a")) {
+            relevantTimes = chickfilatimes;
+            relevantOpinion = chickfilaOpinion;
+        } else if (restaurantChosen.getName().equals("Twisted Taco")) {
+            relevantTimes = twistedtimes;
+            relevantOpinion = twistedOpinion;
+        } else {
+            relevantTimes = subwaytimes;
+            relevantOpinion = subwayOpinion;
+        }
+
+
+
+        if (dietPref.equals(DietPref.Vegan)) {
+            return Reason.DietaryPref;
+        } else if (this.nutritionPreference.equals(NutritionPreference.Nutrition)) {
+            return Reason.Nutrition;
+        } else if (EFfactor >= 0.5 && relevantTimes == 0) {
+            return Reason.Exploration;
+        } else if (EFfactor < 0.5 && (relevantOpinion == Opinion.High || relevantOpinion == Opinion.Medium)) {
+            return Reason.Familiarity;
+        } else if (emotion == Emotion.Negative) {
+            return Reason.MentalState;
+        } else {
+            return Reason.Craving;
+        }
     }
 
     public double getRestaurantScore(Restaurant restaurant) {
@@ -336,9 +435,169 @@ public class User {
                       : (restaurant.getName().equals("Rays")) ? raystimes
                       : subwaytimes;
         int total_times = pandatimes + twistedtimes + chickfilatimes + raystimes + subwaytimes;
-        double restaurantScore = ((1 - EFfactor) / total_times) + (EFfactor / (100 * num_times + 0.5));
+        double restaurantScore = ((1 - EFfactor) / total_times) + (EFfactor / (5 * num_times + 0.5));
         //System.out.println(" is leaning towards " + individualArgmax().getName());
         return  restaurantScore;
+    }
+
+    //returns the degree of force the User exerts on the group decision;
+    public double getDegree() {
+        return Degree;
+    }
+
+    public void setDegree(double degree) {
+        this.Degree = degree;
+    }
+
+    public Restaurant findGroupRestaurant(Map<String, Integer> voteBank) {
+        ArrayList<UserModel> groupRestaurantChoices = new ArrayList<>();
+        boolean nzDegrees = true;
+
+        String chosenRestaurant = Collections.max(voteBank.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();
+
+        /*for (UserModel u: userModelMap.values()) {
+            if (u.degree == 0) {
+                nzDegrees = false;
+            }
+            groupRestaurantChoices.add(u);
+        }
+
+        groupRestaurantChoices.sort(new Comparator<UserModel>() {
+            @Override
+            public int compare(UserModel o1, UserModel o2) {
+                return (int) (o1.getDegree() - o2.getDegree());
+            }
+        });
+        
+        if (nzDegrees) {
+            return groupRestaurantChoices.get(0).getRestaurantChosen();
+        } else {
+            Random rand = new Random();
+            return groupRestaurantChoices.get(rand.nextInt(groupRestaurantChoices.size())).getRestaurantChosen();
+        }*/
+
+        if (chosenRestaurant.equals("Panda Express")) {
+            return new Panda_Express();
+        } else if (chosenRestaurant.equals("Rays")) {
+            return new Rays();
+        } else if (chosenRestaurant.equals("Chick-fil-a")) {
+            return new Chick_Fila();
+        } else if (chosenRestaurant.equals("Twisted Taco")) {
+            return new Twisted_Taco();
+        } else {
+            return new Subway();
+        }
+
+    }
+
+    public void setGroupRestaurant(Restaurant restaurantChosen) {
+        this.groupRestaurant = restaurantChosen;
+    }
+    
+    //sets the Food item chosen by the user 
+    public void setFoodItemChosen(Food foodItemChosen) {
+        this.foodItemChosen = foodItemChosen;
+    }
+
+    //updates the opinion that the user have of the restaurant that the group chose
+    public void updateOpinion() {
+
+        Line relevantLineSize;
+        if (groupRestaurant.getName().equals("Panda Express")) {
+            relevantLineSize = pandals;
+        } else if (groupRestaurant.getName().equals("Rays")) {
+            relevantLineSize = raysls;
+        } else if (groupRestaurant.getName().equals("Chick-fil-a")) {
+            relevantLineSize = chickfilals;
+        } else if (groupRestaurant.getName().equals("Twisted Taco")) {
+            relevantLineSize = twistedls;
+        } else {
+            relevantLineSize = subwayls;
+        }
+
+        if (relevantLineSize.equals(Line.Long)) {
+            if (groupRestaurant.getName().equals("Panda Express")) {
+                pandaOpinion = decrementOpinion(pandaOpinion);
+            } else if (groupRestaurant.getName().equals("Rays")) {
+                raysOpinion = decrementOpinion(raysOpinion);
+            } else if (groupRestaurant.getName().equals("Chick-fil-a")) {
+                chickfilaOpinion = decrementOpinion(chickfilaOpinion);
+            } else if (groupRestaurant.getName().equals("Twisted Taco")) {
+                twistedOpinion = decrementOpinion(chickfilaOpinion);
+            } else {
+                subwayOpinion = decrementOpinion(subwayOpinion);
+            } 
+        } else if (foodItemChosen == null) {
+            if (groupRestaurant.getName().equals("Panda Express")) {
+                pandaOpinion = Opinion.Low;
+            } else if (groupRestaurant.getName().equals("Rays")) {
+                raysOpinion = Opinion.Low;
+            } else if (groupRestaurant.getName().equals("Chick-fil-a")) {
+                chickfilaOpinion = Opinion.Low;
+            } else if (groupRestaurant.getName().equals("Twisted Taco")) {
+                twistedOpinion = Opinion.Low;
+            } else {
+                subwayOpinion = Opinion.Low;
+            }
+        } else {
+            if (groupRestaurant.getName().equals("Panda Express")) {
+                pandaOpinion = incrementOpinion(pandaOpinion);
+            } else if (groupRestaurant.getName().equals("Rays")) {
+                raysOpinion = incrementOpinion(raysOpinion);
+            } else if (groupRestaurant.getName().equals("Chick-fil-a")) {
+                chickfilaOpinion = incrementOpinion(chickfilaOpinion);
+            } else if (groupRestaurant.getName().equals("Twisted Taco")) {
+                twistedOpinion = incrementOpinion(twistedOpinion);
+            } else {
+                subwayOpinion = incrementOpinion(subwayOpinion);
+            }
+
+        }
+
+    }
+
+    //method to update deferredGratification if you didn't get to go to your specific restaurant 
+    public void updateDeferredGratification() {
+        if (!restaurantChosen.getName().equals(groupRestaurant.getName())) {
+            deferredGratification++;
+        } else {
+            deferredGratification = 0;
+        }
+    }
+    
+    //method to update the number of times a person has been to a restaurant
+    public void updateRestaurantTimes() {
+        if (groupRestaurant.getName().equals("Panda Express")) {
+            pandatimes++;
+        } else if (groupRestaurant.getName().equals("Rays")) {
+            raystimes++;
+        } else if (groupRestaurant.getName().equals("Chick-fil-a")) {
+            chickfilatimes++;
+        } else if (groupRestaurant.getName().equals("Twisted Taco")) {
+            twistedtimes++;
+        } else {
+            subwaytimes++;
+        }
+
+    }
+
+    public Opinion incrementOpinion (Opinion opinion) {
+        if (opinion == Opinion.Medium) {
+            return  Opinion.High;
+        } else if(opinion == Opinion.Low) {
+             return Opinion.Medium;
+        }
+        return opinion;
+    }
+
+    public Opinion decrementOpinion (Opinion opinion) {
+        if (opinion == Opinion.Medium) {
+           return Opinion.Low;
+        } else if(opinion == Opinion.High) {
+            return Opinion.Medium;
+        }
+
+        return opinion;
     }
 
     public Restaurant individualArgmax() {
@@ -356,5 +615,68 @@ public class User {
             }
         }
         return argmax;
+    }
+
+    public String composeUserString() {
+        //userdata csv userline format: budget ,nutritional preference,dietary preference ,hunger,emotion,panda ls,twisted ls,cfa ls ,rays ls ,subway ls,bad ex,has commitment ,EF trait ,leadership ,deferred gratification ,altruism ,#times at panda ,#times at twisted,#time at cfa,#times at rays ,#times at subway,panda opinion ,twisted opinion ,chickfila opinion,rays opinion ,subway opinion
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 14; i++) {
+            sb.append(userString[i]);
+            sb.append(",");
+        }
+        sb.append(Integer.toString(this.deferredGratification));
+        sb.append(",");
+        sb.append(Double.toString(this.altruism));
+        sb.append(",");
+        sb.append(Integer.toString(this.pandatimes));
+        sb.append(",");
+        sb.append(Integer.toString(this.twistedtimes));
+        sb.append(",");
+        sb.append(Integer.toString(this.chickfilatimes));
+        sb.append(",");
+        sb.append(Integer.toString(this.raystimes));
+        sb.append(",");
+        sb.append(Integer.toString(this.subwaytimes));
+        sb.append(",");
+        if (this.pandaOpinion == Opinion.Low) {
+            sb.append("1,");
+        } else if(this.pandaOpinion == Opinion.Medium) {
+            sb.append("2,");
+        } else {
+            sb.append("3,");
+        }
+        if (this.twistedOpinion == Opinion.Low) {
+            sb.append("1,");
+        } else if(this.twistedOpinion == Opinion.Medium) {
+            sb.append("2,");
+        } else {
+            sb.append("3,");
+        }
+        if (this.chickfilaOpinion == Opinion.Low) {
+            sb.append("1,");
+        } else if(this.chickfilaOpinion == Opinion.Medium) {
+            sb.append("2,");
+        } else {
+            sb.append("3,");
+        }
+        if (this.raysOpinion == Opinion.Low) {
+            sb.append("1,");
+        } else if(this.raysOpinion == Opinion.Medium) {
+            sb.append("2,");
+        } else {
+            sb.append("3,");
+        }
+        if (this.subwayOpinion == Opinion.Low) {
+            sb.append("1,");
+        } else if(this.subwayOpinion == Opinion.Medium) {
+            sb.append("2,");
+        } else {
+            sb.append("3,");
+        }
+        sb.append(userString[26]);
+        sb.append('\n');
+
+        return sb.toString();
     }
 }

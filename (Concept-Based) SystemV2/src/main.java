@@ -1,10 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class main {
-    public static void main(String args[]) throws FileNotFoundException {
 
+    public static void groupLunchDecision() throws IOException{
         //userdata csv userline format: budget ,nutritional preference,dietary preference ,hunger,emotion,panda ls,twisted ls,cfa ls ,rays ls ,subway ls,bad ex,has commitment ,EF trait ,leadership ,deferred gratification ,altruism ,#times at panda ,#times at twisted,#time at cfa,#times at rays ,#times at subway,panda opinion ,twisted opinion ,chickfila opinion,rays opinion ,subway opinion
 
         File userdata = new File("./src/userdata.csv");
@@ -22,6 +24,7 @@ public class main {
             String[] userInfo = userLine.split(",");
             users.add(new User(userInfo));
         }
+        reader.close();
 
         if (users.size() == 1) {
             User user1 = users.get(0);
@@ -39,6 +42,7 @@ public class main {
             }
         } else {
             //Leader selection
+            System.out.println("--- Choosing the leader ---");
             User groupLeader;
             List<User> leaderCandidates = new ArrayList<>();
 
@@ -54,14 +58,82 @@ public class main {
                 groupLeader = leaderCandidates.get(rand.nextInt(leaderCandidates.size()));
             }
 
+            System.out.println("Individual-" + groupLeader.userNum + " has been chosen as the leader because they " +
+                    "show the most leadership like qualities.\n");
+
             //Restaurant discussion
             System.out.println("Individual-" + groupLeader.userNum + ": \"Where does everyone want to go?\"");
+
+            Map<User, UserModel> entireGroup = new HashMap<>();
+
             for (User user : users) {
+
                 user.filterEverything();
-                System.out.print("Individual-" + user.userNum + ": \"I want to go to " + user.restaurantChosen.getName());
-                if (user.EFfactor > 0.5) {
-                    System.out.println()
+
+                //fix up how the usermodel is created
+
+                UserModel userModel = new UserModel(user.restaurantChosen, user.getReason(), user.getDegree());
+                entireGroup.put(user, userModel);
+
+                //if an individual is very altruistic and the don't have a need to
+                // assert their opinion based on deferred gratification
+                if (user.altruism >= 0.7 && user.deferredGratification <= 2) {
+                    System.out.println("Individual-" + user.userNum + ": \"I don't particularly care where I go so, you it's up to you guys to choose where we go.");
+                    user.setDegree(0);
+                } else {
+                    System.out.println("Individual-" + user.userNum + ": \"I want to go to " + user.restaurantChosen.getName()
+                            + " because " + user.getReason().getReason());
                 }
+                //update method call
+                for (User otherUser: users) {
+                    if (otherUser != user) {
+                        user.userModelMap.put(user, userModel);
+                    }
+                }
+
+                //System.out.println("--- All users are updating their model of" + " Individual-" + user.userNum + " ---");
+
+                if (user.EFfactor > 0.5) {
+                    System.out.println();
+                }
+            }
+
+
+            Map<String, Integer> Votebank = new HashMap<>();
+            for (int i = 0; i < restaurants.size(); i++) {
+                Votebank.put(restaurants.get(i).getName(), 0);
+            }
+
+            for (User user: users) {
+                Votebank.put(user.restaurantChosen.getName(),
+                        (int) (user.getDegree() + Votebank.get(user.restaurantChosen.getName())));
+            }
+
+            Restaurant groupRestaurant = groupLeader.findGroupRestaurant(Votebank);
+
+            for(User user: users) {
+
+                user.setGroupRestaurant(groupRestaurant);
+                user.setFoodItemChosen(user.restaurantChosen.chooseFoodItem(user.nutritionPreference, user.budget, user.dietPref, user.hunger));
+            }
+
+            System.out.println("Individual-" + groupLeader.userNum + ": Based on the group's preferences, let's go to " + groupRestaurant.getName());
+
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                Food eatThis = groupRestaurant.chooseFoodItem(user.nutritionPreference, user.budget, user.dietPref, user.hunger);
+                int u = i + 1;
+                if (eatThis == null) {
+                    System.out.println("\nIndividual-" + u + " has chosen not to eat as there is nothing for him/her right now.");
+                } else {
+                    System.out.println("\nIndividual-" + u + " has chosen to eat " + eatThis);
+                }
+            }
+
+            for (User u: users) {
+                u.updateOpinion();
+                u.updateDeferredGratification();
+                u.updateRestaurantTimes();
             }
 
 
@@ -107,7 +179,20 @@ public class main {
                     System.out.println("\nUser-" + u + " has chosen to eat " + eatThis);
                 }
             }*/
+            updateUserData(userdata, users);
         }
+    }
+
+    public static synchronized void main(String args[]) {
+
+        for (int i = 0; i < 20; i++) {
+            try {
+                groupLunchDecision();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public static Restaurant argmax(Map<Restaurant, Double> groupRS) {
@@ -120,6 +205,15 @@ public class main {
         }
         Restaurant argmax = maxEntry.getKey();
         return argmax;
+    }
+
+    public static void updateUserData(File userdata, List<User> users) throws IOException {
+        try (PrintWriter writer = new PrintWriter(userdata)) {
+            for (User user : users) {
+                writer.write(user.composeUserString());
+            }
+            writer.close();
+        }
     }
 
 }

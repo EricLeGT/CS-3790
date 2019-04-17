@@ -153,11 +153,29 @@ enum Leadership {
     Yes, No;
 }
 
-enum Altruism {
+enum Opinion {
     Low, Medium, High;
 }
 
-enum Opinion {
-    Low, Medium, High;
+enum Reason {
+    Nutrition("I care about my food's nutrition"),
+    DietaryPref("I really care about my dietary preference"),
+    //Budget("I'm a little tight on money."),
+    DeferredGratification("we haven't eaten at a place I've wanted for a while."),
+    Familiarity("I feel like eating at my go-to restaurant."),
+    Exploration("I feel like trying something new."),
+    MentalState("I'm feeling kind of stressed, so I'm craving unhealthy food."),
+    Craving("I'm craving their food.");
+
+
+    String reason;
+
+    Reason (String reason) {
+        this.reason = reason;
+    }
+
+    public String getReason(){
+        return reason;
+    }
 }
 
