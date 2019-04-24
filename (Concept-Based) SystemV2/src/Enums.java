@@ -164,7 +164,7 @@ enum Reason {
     DeferredGratification("we haven't eaten at a place I've wanted for a while."),
     Familiarity("I feel like eating at my go-to restaurant."),
     Exploration("I feel like trying something new."),
-    MentalState("I'm feeling kind of stressed, so I'm craving unhealthy food."),
+    MentalState("I'm feeling kind of stressed, so that's what I'm craving."),
     Craving("I'm craving their food.");
 
 
@@ -176,6 +176,25 @@ enum Reason {
 
     public String getReason(){
         return reason;
+    }
+}
+
+enum FoodReason {
+    Nutrition("I wanted something healthy to eat."),
+    Vegetarian("I'm vegetarian and this was the best option."),
+    Budget("I wanted something cheap to eat."),
+    Emotion("I'm feeling down and needed this to pick me up."),
+    Craving("I was just craving this");
+
+
+    String foodReason;
+
+    FoodReason(String foodReason) {
+        this.foodReason = foodReason;
+    }
+
+    public String getFoodReason() {
+        return foodReason;
     }
 }
 

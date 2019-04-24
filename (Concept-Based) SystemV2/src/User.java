@@ -42,6 +42,10 @@ public class User {
     Line subwayls;
     int userNum;
 
+    FoodReason foodReason;
+
+    int[] lineSizes = new int[5];
+
     Map<User, UserModel> userModelMap;
 
     public User(String[] userString) {
@@ -212,7 +216,9 @@ public class User {
 
         userModelMap = new HashMap<>();
 
-        this.Degree = (1 - altruism) * (deferredGratification + 1);
+//        double unnormalizedDegree = (1 - altruism) * (deferredGratification + 1);
+//        this.Degree = 4 / (1 + Math.exp(unnormalizedDegree / 2)) - 1;
+        this.Degree = (1-altruism) * deferredGratification;
     }
 
     public User(Budget budget, NutritionPreference preferences, Hunger hunger, Cravings cravings) {
@@ -351,8 +357,40 @@ public class User {
 
     public void filterEverything() {
 
-        //if user has a low opinion of that restaurant, remove it
-        removeBasedOnOpinion();
+        //sorts based on opinion;
+        Collections.sort(restaurantList, new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant o1, Restaurant o2) {
+                Opinion relevantOpinion1;
+                Opinion relevantOpinion2;
+
+                if (o1.getName().equals("Panda Express")) {
+                    relevantOpinion1 = pandaOpinion;
+                } else if (o1.getName().equals("Rays")) {
+                    relevantOpinion1 = raysOpinion;
+                } else if (o1.getName().equals("Chick-fil-a")) {
+                    relevantOpinion1 = chickfilaOpinion;
+                } else if (o1.getName().equals("Twisted Taco")) {
+                    relevantOpinion1 = twistedOpinion;
+                } else {
+                    relevantOpinion1 = subwayOpinion;
+                }
+
+                if (o2.getName().equals("Panda Express")) {
+                    relevantOpinion2 = pandaOpinion;
+                } else if (o2.getName().equals("Rays")) {
+                    relevantOpinion2 = raysOpinion;
+                } else if (o2.getName().equals("Chick-fil-a")) {
+                    relevantOpinion2 = chickfilaOpinion;
+                } else if (o2.getName().equals("Twisted Taco")) {
+                    relevantOpinion2 = twistedOpinion;
+                } else {
+                    relevantOpinion2 = subwayOpinion;
+                }
+
+                return relevantOpinion1.ordinal() - relevantOpinion2.ordinal();
+            }
+        });
 
         //filterDietaryPreferences();
         //System.out.println("User: Remove past bad experiences");
@@ -364,9 +402,9 @@ public class User {
 
         //this method call takes out restaurants that have a really long line size
         //System.out.println("User: Filter out commitments");
-        if (commitment.equals(Commitment.Yes)) {
-            removeLongWaittime();
-        }
+//        if (commitment.equals(Commitment.Yes)) {
+//            removeLongWaittime();
+//        }
 
         //setting the Nutrition preference of the User based on their emotion
         //regardless of what their long-term views on nutrition are
@@ -377,18 +415,26 @@ public class User {
 
         //Sorting the list based on general ranking (if user doesn't care about nutrition)
         if (this.nutritionPreference.equals(NutritionPreference.NoNutrition)) {
-            restaurantList.sort((o1, o2) -> o1.getTasteRank() - o2.getTasteRank());
+            restaurantList.sort(Comparator.comparingInt(Restaurant::getTasteRank));
         } else {
             //Sorting the list based on ranking (if the user does care about nutrition)
             //Sorting the list based on general ranking (if user doesn't care about nutrition)
-            restaurantList.sort((o1, o2) -> o1.getNutritionRank() - o2.getNutritionRank());
+            restaurantList.sort(Comparator.comparingInt(Restaurant::getNutritionRank));
         }
 
         //figure out a way to generate the reason for choosing the restaurant
         //this.reasonForRestaurantChosen = getReason();
-
-        restaurantChosen = individualArgmax();
-
+        if (restaurantList.isEmpty()) {
+            Random rand = new Random();
+            restaurantList.add(new Panda_Express());
+            restaurantList.add(new Twisted_Taco());
+            restaurantList.add(new Subway());
+            restaurantList.add(new Rays());
+            restaurantList.add(new Chick_Fila());
+            restaurantChosen = restaurantList.get(rand.nextInt(restaurantList.size()));
+        } else {
+            restaurantChosen = individualArgmax();
+        }
     }
 
     public Reason getReason() {
@@ -449,11 +495,88 @@ public class User {
         this.Degree = degree;
     }
 
-    public Restaurant findGroupRestaurant(Map<String, Integer> voteBank) {
-        ArrayList<UserModel> groupRestaurantChoices = new ArrayList<>();
-        boolean nzDegrees = true;
+    public Restaurant findGroupRestaurant(Map<String, Integer> popularityVotebank, Map<User, Double> weightedVotebank,
+                                          Map<User, Integer> userDG) {
+        String chosenRestaurant;
+        double maxValue = Double.MIN_VALUE;
+        List<String> maxRestNames = new ArrayList<>();
 
-        String chosenRestaurant = Collections.max(voteBank.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey();
+        Boolean useDG = false;
+        for (Map.Entry<User, Integer> entry: userDG.entrySet()) {
+            if (entry.getValue() >= 2) {
+                useDG = true;
+            }
+        }
+//        for (Map.Entry<String, Double> entry : weightedVotebank.entrySet()) {
+//            if (maxValue == Double.MIN_VALUE || maxValue == entry.getValue()) {
+//                maxValue = entry.getValue();
+//                maxRestNames.add(entry.getKey());
+//            } else if (entry.getValue() > maxValue) {
+//                maxValue = entry.getValue();
+//                maxRestNames.clear();
+//                maxRestNames.add(entry.getKey());
+//            }
+//        }
+
+        //Random rand = new Random();
+        //chosenRestaurant = maxRestNames.get(rand.nextInt(maxRestNames.size()));
+
+        int plurality = Collections.max(popularityVotebank.values());
+        chosenRestaurant = Collections.max(popularityVotebank.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
+        if (plurality > weightedVotebank.entrySet().size() / 2) {
+            System.out.println("Individual-" + userNum + ": Let's go to "
+                    + chosenRestaurant + " because a majority of us want to go there\n");
+        } else {
+            if (useDG) {
+                List<Map.Entry<User, Double>> list = new LinkedList<>(weightedVotebank.entrySet());
+                Collections.sort(list, new Comparator<Map.Entry<User, Double>>() {
+                    @Override
+                    public int compare(Map.Entry<User, Double > o1, Map.Entry<User, Double> o2) {
+                        if (o1.getValue() > o2.getValue()) {
+                            return -1;
+                        } else if (o1.getValue() == o2.getValue()) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    }
+                });
+
+                Map.Entry<User, Double> entry = list.get(0);
+                chosenRestaurant = list.get(0).getKey().restaurantChosen.toString();
+
+                System.out.print("Individual-" + userNum + ": Let's go to "
+                        + chosenRestaurant);
+                System.out.println(" because Individual-" + entry.getKey().userNum + " hasn't had a chance to pick where we " +
+                        "go in a while and wants to go there.\n");
+            } else {
+                System.out.println("Individual-" + userNum + ": Let's go to "
+                        + chosenRestaurant + " because many of us want to go there\n");
+            }
+        }
+
+//        int plurality = Collections.max(popularityVotebank.values());
+//
+//        //check if plurality is majority ==> then go by only popular vote, not weighted
+//        if (plurality > (userModelMap.size() + 1) / 2) {
+//            chosenRestaurant = Collections.max(popularityVotebank.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
+//            System.out.println("Individual-" + userNum + ": Let's go to "
+//                    + chosenRestaurant + " because most of us want to go there\n");
+//        } else {
+//            List<Integer> deferredUserNums = getDeferredUsers(chosenRestaurant);
+//            if (deferredUserNums.isEmpty()) {
+//                System.out.println("Individual-" + userNum + ": Let's go to "
+//                        + chosenRestaurant + " because a plurality of us want to go there.\n");
+//            } else {
+//                System.out.print("Individual-" + userNum + ": Let's go to "
+//                        + chosenRestaurant);
+//                System.out.println(" because ");
+//                for (int userNum : deferredUserNums) {
+//                    System.out.print(" Individual-" + userNum + " ");
+//                }
+//                System.out.print("hasn't had a chance to pick where we go in a while and wants to go there.");
+//            }
+//        }
 
         /*for (UserModel u: userModelMap.values()) {
             if (u.degree == 0) {
@@ -490,6 +613,16 @@ public class User {
 
     }
 
+    private List<Integer> getDeferredUsers(String restaurantChosen) {
+        List<Integer> userNums = new ArrayList<>();
+        for (User user : userModelMap.keySet()) {
+            if (userModelMap.get(user).preferred.getName().equals(restaurantChosen) && userModelMap.get(user).degree > 1) {
+                userNums.add(user.userNum);
+            }
+        }
+        return userNums;
+    }
+
     public void setGroupRestaurant(Restaurant restaurantChosen) {
         this.groupRestaurant = restaurantChosen;
     }
@@ -500,8 +633,7 @@ public class User {
     }
 
     //updates the opinion that the user have of the restaurant that the group chose
-    public void updateOpinion() {
-
+    public String updateOpinion() {
         Line relevantLineSize;
         if (groupRestaurant.getName().equals("Panda Express")) {
             relevantLineSize = pandals;
@@ -515,19 +647,7 @@ public class User {
             relevantLineSize = subwayls;
         }
 
-        if (relevantLineSize.equals(Line.Long)) {
-            if (groupRestaurant.getName().equals("Panda Express")) {
-                pandaOpinion = decrementOpinion(pandaOpinion);
-            } else if (groupRestaurant.getName().equals("Rays")) {
-                raysOpinion = decrementOpinion(raysOpinion);
-            } else if (groupRestaurant.getName().equals("Chick-fil-a")) {
-                chickfilaOpinion = decrementOpinion(chickfilaOpinion);
-            } else if (groupRestaurant.getName().equals("Twisted Taco")) {
-                twistedOpinion = decrementOpinion(chickfilaOpinion);
-            } else {
-                subwayOpinion = decrementOpinion(subwayOpinion);
-            } 
-        } else if (foodItemChosen == null) {
+        if (foodItemChosen == null) {
             if (groupRestaurant.getName().equals("Panda Express")) {
                 pandaOpinion = Opinion.Low;
             } else if (groupRestaurant.getName().equals("Rays")) {
@@ -539,6 +659,20 @@ public class User {
             } else {
                 subwayOpinion = Opinion.Low;
             }
+            return "has decreased because they could not get anything to eat.";
+        } else if (relevantLineSize.equals(Line.Long)) {
+            if (groupRestaurant.getName().equals("Panda Express")) {
+                pandaOpinion = decrementOpinion(pandaOpinion);
+            } else if (groupRestaurant.getName().equals("Rays")) {
+                raysOpinion = decrementOpinion(raysOpinion);
+            } else if (groupRestaurant.getName().equals("Chick-fil-a")) {
+                chickfilaOpinion = decrementOpinion(chickfilaOpinion);
+            } else if (groupRestaurant.getName().equals("Twisted Taco")) {
+                twistedOpinion = decrementOpinion(chickfilaOpinion);
+            } else {
+                subwayOpinion = decrementOpinion(subwayOpinion);
+            }
+            return "has decreased because there was a long line";
         } else {
             if (groupRestaurant.getName().equals("Panda Express")) {
                 pandaOpinion = incrementOpinion(pandaOpinion);
@@ -551,9 +685,8 @@ public class User {
             } else {
                 subwayOpinion = incrementOpinion(subwayOpinion);
             }
-
+            return "has improved because they had a good experience.";
         }
-
     }
 
     //method to update deferredGratification if you didn't get to go to your specific restaurant 
@@ -563,6 +696,10 @@ public class User {
         } else {
             deferredGratification = 0;
         }
+
+//        double unnormalizedDegree = (1 - altruism) * (this.deferredGratification + 1);
+//        this.Degree = 4 / (1 + Math.exp(unnormalizedDegree / 2)) - 1;
+        this.Degree = (1 - altruism) * deferredGratification;
     }
     
     //method to update the number of times a person has been to a restaurant
@@ -617,11 +754,33 @@ public class User {
         return argmax;
     }
 
+    public void setFoodReason() {
+        if (dietPref == DietPref.Vegetarian) {
+            foodReason = FoodReason.Vegetarian;
+        } else if (nutritionPreference == NutritionPreference.Nutrition) {
+            foodReason = FoodReason.Nutrition;
+        } else if (emotion == Emotion.Negative) {
+            foodReason = FoodReason.Emotion;
+        } else if (budget == Budget.Poor) {
+            foodReason = FoodReason.Budget;
+        } else {
+            foodReason = FoodReason.Craving;
+        }
+    }
+
     public String composeUserString() {
         //userdata csv userline format: budget ,nutritional preference,dietary preference ,hunger,emotion,panda ls,twisted ls,cfa ls ,rays ls ,subway ls,bad ex,has commitment ,EF trait ,leadership ,deferred gratification ,altruism ,#times at panda ,#times at twisted,#time at cfa,#times at rays ,#times at subway,panda opinion ,twisted opinion ,chickfila opinion,rays opinion ,subway opinion
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 5; i++) {
+            sb.append(userString[i]);
+            sb.append(",");
+        }
+        for (int i = 0; i < lineSizes.length; i++) {
+            sb.append(lineSizes[i]);
+            sb.append(",");
+        }
+        for (int i = 10; i < 14; i++) {
             sb.append(userString[i]);
             sb.append(",");
         }

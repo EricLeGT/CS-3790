@@ -46,6 +46,12 @@ public class main {
             User groupLeader;
             List<User> leaderCandidates = new ArrayList<>();
 
+            try {
+                Thread.sleep(600);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             Random rand = new Random();
             for (User user : users) {
                 if (user.leadership == Leadership.Yes) {
@@ -54,15 +60,29 @@ public class main {
             }
             if (leaderCandidates.isEmpty()) {
                 groupLeader = users.get(rand.nextInt(users.size()));
+                System.out.println("Individual-" + groupLeader.userNum + " steps up as the group leader because" +
+                        "nobody else decided to speak up or take charge.\n");
             } else {
                 groupLeader = leaderCandidates.get(rand.nextInt(leaderCandidates.size()));
+                System.out.println("Individual-" + groupLeader.userNum + " steps up as the group leader as he/she " +
+                        "has prominent leadership like qualities.\n");
             }
 
-            System.out.println("Individual-" + groupLeader.userNum + " has been chosen as the leader because they " +
-                    "show the most leadership like qualities.\n");
+
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             //Restaurant discussion
-            System.out.println("Individual-" + groupLeader.userNum + ": \"Where does everyone want to go?\"");
+            System.out.println("Individual-" + groupLeader.userNum + ": Where does everyone want to go?\n");
+
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             Map<User, UserModel> entireGroup = new HashMap<>();
 
@@ -77,11 +97,11 @@ public class main {
 
                 //if an individual is very altruistic and the don't have a need to
                 // assert their opinion based on deferred gratification
-                if (user.altruism >= 0.7 && user.deferredGratification <= 2) {
-                    System.out.println("Individual-" + user.userNum + ": \"I don't particularly care where I go so, you it's up to you guys to choose where we go.");
+                if (user.altruism >= 0.9 && user.deferredGratification <= 2) {
+                    System.out.println("Individual-" + user.userNum + ": I don't particularly care where I go so it's up to you guys to choose where we go.");
                     user.setDegree(0);
                 } else {
-                    System.out.println("Individual-" + user.userNum + ": \"I want to go to " + user.restaurantChosen.getName()
+                    System.out.println("Individual-" + user.userNum + ": I want to go to " + user.restaurantChosen.getName()
                             + " because " + user.getReason().getReason());
                 }
                 //update method call
@@ -93,47 +113,99 @@ public class main {
 
                 //System.out.println("--- All users are updating their model of" + " Individual-" + user.userNum + " ---");
 
-                if (user.EFfactor > 0.5) {
-                    System.out.println();
+                try {
+                    Thread.sleep(250);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
 
-            Map<String, Integer> Votebank = new HashMap<>();
+            Map<User, Double> weightedVotebank = new HashMap<>();
+            Map<String, Integer> popularityVotebank = new HashMap<>();
+            Map<User, Integer> usersDeferredGratification = new HashMap<>();
+
             for (int i = 0; i < restaurants.size(); i++) {
-                Votebank.put(restaurants.get(i).getName(), 0);
+                //weightedVotebank.put(restaurants.get(i).getName(), 0.0);
+                popularityVotebank.put(restaurants.get(i).getName(), 0);
             }
 
             for (User user: users) {
-                Votebank.put(user.restaurantChosen.getName(),
-                        (int) (user.getDegree() + Votebank.get(user.restaurantChosen.getName())));
+                weightedVotebank.put(user, user.getDegree());
+                popularityVotebank.put(user.restaurantChosen.getName(),
+                        (1 + popularityVotebank.get(user.restaurantChosen.getName())));
+                usersDeferredGratification.put(user, user.deferredGratification);
             }
 
-            Restaurant groupRestaurant = groupLeader.findGroupRestaurant(Votebank);
+            Restaurant groupRestaurant = groupLeader.findGroupRestaurant(popularityVotebank, weightedVotebank,
+                    usersDeferredGratification);
 
             for(User user: users) {
-
-                user.setGroupRestaurant(groupRestaurant);
-                user.setFoodItemChosen(user.restaurantChosen.chooseFoodItem(user.nutritionPreference, user.budget, user.dietPref, user.hunger));
+                user.groupRestaurant = groupRestaurant;
             }
 
-            System.out.println("Individual-" + groupLeader.userNum + ": Based on the group's preferences, let's go to " + groupRestaurant.getName());
+            /*int groupDecisionVotes = 0;
+            for(User user: users) {
+                user.setGroupRestaurant(groupRestaurant);
+                if (groupRestaurant.getName().equals(user.restaurantChosen.getName())) {
+                    groupDecisionVotes++;
+                }
+            }
+
+            if (groupDecisionVotes > users.size() / 2) {
+                System.out.println("Individual-" + groupLeader.userNum + ": Let's go to "
+                        + groupRestaurant.getName() + " because many of us want to go there\n");
+            } else {
+                System.out.println("Individual-" + groupLeader.userNum + ": Let's go to "
+                        + groupRestaurant.getName() + " because some of us want to go there and haven't had their choices heard in a while.\n");
+            }*/
+
 
             for (int i = 0; i < users.size(); i++) {
                 User user = users.get(i);
                 Food eatThis = groupRestaurant.chooseFoodItem(user.nutritionPreference, user.budget, user.dietPref, user.hunger);
+                user.foodItemChosen = eatThis;
+                user.setFoodReason();
+                FoodReason foodreason = user.foodReason;
                 int u = i + 1;
-                if (eatThis == null) {
-                    System.out.println("\nIndividual-" + u + " has chosen not to eat as there is nothing for him/her right now.");
+                if (eatThis == null || eatThis.toString() == null) {
+                    System.out.println("Individual-" + u + " I have chosen not to eat as there is nothing for me right now.");
                 } else {
-                    System.out.println("\nIndividual-" + u + " has chosen to eat " + eatThis);
+                    System.out.println("Individual-" + u + " I have chosen to eat " + eatThis.toString() +
+                            " because " + foodreason.getFoodReason());
+
+                }
+                try {
+                    Thread.sleep(250);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
+            int[] lineSize = new int[5];
+            Random random = new Random();
+            for (int i = 0; i < lineSize.length; i++) {
+                lineSize[i] = random.nextInt(3) + 1;
+            }
+
             for (User u: users) {
-                u.updateOpinion();
+                u.lineSizes = lineSize;
+            }
+
+            System.out.print("\n");
+
+            for (User u: users) {
+                String opinion = u.updateOpinion();
+                System.out.println("Individual-" + u.userNum + "'s opinion on "
+                        + groupRestaurant.getName() + " " + opinion);
+
                 u.updateDeferredGratification();
                 u.updateRestaurantTimes();
+                try {
+                    Thread.sleep(250);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
 
@@ -185,9 +257,11 @@ public class main {
 
     public static synchronized void main(String args[]) {
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 6; i++) {
             try {
+                System.out.println("--------------------------------------Group Decides To Go Out For Lunch--------------------------------------");
                 groupLunchDecision();
+                System.out.println("-------------------------------------------------------------------------------------------------------------");
             } catch (IOException e) {
                 e.printStackTrace();
             }
